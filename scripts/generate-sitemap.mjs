@@ -30,6 +30,13 @@ const blogSlugs = [
   'aeromasaj-sau-hidromasaj',
   'de-ce-conteaza-izolatia',
 ];
+const accessorySlugs = [
+  'termometru-apa',
+  'suport-pahare-mare',
+  'suport-pahare-mic',
+  'tetiera-suplimentara',
+  'bec-led-multicolor',
+];
 
 const routes = [
   { path: '/', priority: '1.0', freq: 'weekly' },
@@ -37,6 +44,7 @@ const routes = [
   ...ciubareSlugs.map((s) => ({ path: `/ciubare/${s}`, priority: '0.8', freq: 'monthly' })),
   { path: '/cuve-fibra-de-sticla', priority: '0.8', freq: 'monthly' },
   { path: '/accesorii', priority: '0.7', freq: 'monthly' },
+  ...accessorySlugs.map((s) => ({ path: `/accesorii/${s}`, priority: '0.6', freq: 'monthly' })),
   { path: '/despre-noi', priority: '0.6', freq: 'monthly' },
   { path: '/contact', priority: '0.7', freq: 'monthly' },
   { path: '/blog', priority: '0.6', freq: 'weekly' },

@@ -5,12 +5,14 @@ import Products from './pages/Products';
 import ProductDetail from './pages/ProductDetail';
 import Cuve from './pages/Cuve';
 import Accessories from './pages/Accessories';
+import AccessoryDetail from './pages/AccessoryDetail';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import NotFound from './pages/NotFound';
 import { ciubareProducts } from './data/products';
+import { accessories } from './data/accessories';
 import { blogPosts } from './data/blog';
 
 export const routes: RouteRecord[] = [
@@ -28,6 +30,11 @@ export const routes: RouteRecord[] = [
       },
       { path: 'cuve-fibra-de-sticla', element: <Cuve /> },
       { path: 'accesorii', element: <Accessories /> },
+      {
+        path: 'accesorii/:slug',
+        element: <AccessoryDetail />,
+        getStaticPaths: () => accessories.map((a) => `/accesorii/${a.slug}`),
+      },
       { path: 'despre-noi', element: <About /> },
       { path: 'contact', element: <Contact /> },
       { path: 'blog', element: <Blog /> },
