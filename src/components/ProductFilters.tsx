@@ -59,10 +59,11 @@ export default function ProductFilters({ active, onSelect, resultCount }: Props)
     <div className={block ? 'space-y-6' : 'grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-4'}>
       {filterGroups.map((group) => (
         <div key={group.label}>
-          <h3 className="text-[11px] font-semibold uppercase tracking-widest text-sand/50">
+          <h3 className="flex items-center gap-2 text-base font-bold uppercase tracking-wide text-cream">
+            <span className="h-4 w-1 rounded-full bg-gold-gradient" />
             {group.label}
           </h3>
-          <div className={`mt-3 flex flex-wrap gap-2 ${block ? 'flex-col' : ''}`}>
+          <div className={`mt-3.5 flex flex-wrap gap-2 ${block ? 'flex-col' : ''}`}>
             {group.ids.map((id) => (
               <Chip
                 key={id}
