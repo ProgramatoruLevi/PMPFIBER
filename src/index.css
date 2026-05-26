@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-ink-950 text-cream font-sans antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    @apply bg-gold/30 text-cream;
+  }
+
+  /* Custom scrollbar for the premium dark feel */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0e0f0d;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #2e2820;
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #8c6a38;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display;
+    text-wrap: balance;
+  }
+
+  img {
+    -webkit-user-drag: none;
+  }
+}
+
+@layer components {
+  /* Layout container */
+  .container-px {
+    @apply mx-auto w-full max-w-8xl px-5 sm:px-8 lg:px-12;
+  }
+
+  /* Section vertical rhythm */
+  .section {
+    @apply py-20 md:py-28 lg:py-32;
+  }
+
+  /* Eyebrow / kicker label */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-gold-light;
+  }
+
+  /* Gold gradient text */
+  .text-gold-gradient {
+    @apply bg-gold-gradient bg-clip-text text-transparent;
+  }
+
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold tracking-wide transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/60 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950;
+  }
+  .btn-gold {
+    @apply btn bg-gold-gradient text-ink-950 shadow-gold hover:-translate-y-0.5 hover:brightness-110;
+  }
+  .btn-call {
+    @apply btn bg-[#1f8a4c] text-cream shadow-[0_16px_40px_-12px_rgba(31,138,76,0.6)] hover:-translate-y-0.5 hover:brightness-110;
+  }
+  .btn-whatsapp {
+    @apply btn bg-[#25D366] text-[#06351c] shadow-[0_16px_40px_-12px_rgba(37,211,102,0.55)] hover:-translate-y-0.5 hover:brightness-105;
+  }
+  .btn-outline {
+    @apply btn border border-cream/20 bg-white/5 text-cream backdrop-blur-md hover:border-gold/60 hover:bg-white/10;
+  }
+  .btn-ghost {
+    @apply btn text-cream/80 hover:text-cream;
+  }
+
+  /* Glass card */
+  .glass {
+    @apply border border-white/10 bg-white/[0.04] backdrop-blur-xl;
+  }
+
+  /* Pill / badge */
+  .pill {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-gold/25 bg-gold/10 px-3 py-1 text-[11px] font-medium tracking-wide text-gold-light;
+  }
+
+  .hairline {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-gold/30 to-transparent;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+  /* Grain/noise overlay helper */
+  .bg-noise {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    background-size: 3px 3px;
+  }
+}
