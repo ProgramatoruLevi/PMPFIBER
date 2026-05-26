@@ -30,9 +30,9 @@ export default function ProductCard({ product, index = 0 }: Props) {
           alt={`${product.name} — ${product.categoryLabel}`}
           loading={index < 3 ? 'eager' : 'lazy'}
           decoding="async"
-          className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
+          className="h-full w-full object-contain p-3 transition-transform duration-700 ease-out group-hover:scale-[1.05]"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink-900/70 via-transparent to-transparent opacity-80" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink-900/40 via-transparent to-transparent" />
         {product.tier && (
           <span className="absolute left-3 top-3 rounded-full bg-gold-gradient px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-ink-950">
             {product.tier}

@@ -38,4 +38,11 @@ export const accessories: Accessory[] = [
       'Tetieră ergonomică suplimentară pentru confort maxim. Se adaugă oricărui model pentru sprijin optim al cefei.',
     image: '/images/ciubar3.png',
   },
+  {
+    name: 'Bec LED multicolor pneumatic',
+    price: 300,
+    description:
+      'Iluminare LED multicolor cu acționare pneumatică, pentru o atmosferă relaxantă pe timp de seară. Schimbi culoarea simplu, cu o atingere.',
+    image: '/images/ciubar2.png',
+  },
 ];

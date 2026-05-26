@@ -36,6 +36,7 @@ const EXTRAS: OptionMeta[] = [
   { id: 'termometru', label: 'Termometru pentru apă', price: 200 },
   { id: 'suport-mare', label: 'Suport pahare (4 locuri)', price: 200 },
   { id: 'tetiera', label: 'Tetieră suplimentară', price: 50 },
+  { id: 'led', label: 'Bec LED multicolor pneumatic', price: 300 },
 ];
 
 const choiceBtn = (active: boolean) =>
@@ -227,7 +228,7 @@ export default function Configurator() {
                 <img
                   src={recommended.images[0]}
                   alt={recommended.name}
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-contain p-3"
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink-900 via-ink-900/20 to-transparent" />

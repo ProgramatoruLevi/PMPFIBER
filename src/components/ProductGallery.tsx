@@ -37,7 +37,7 @@ export default function ProductGallery({ images, alt }: Props) {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            className="h-full w-full object-contain p-3 transition-transform duration-500 group-hover:scale-[1.03]"
             loading="eager"
             decoding="async"
           />
@@ -74,7 +74,7 @@ export default function ProductGallery({ images, alt }: Props) {
                 alt={`${alt} — imaginea ${i + 1}`}
                 loading="lazy"
                 decoding="async"
-                className="h-full w-full object-cover"
+                className="h-full w-full object-contain p-1"
               />
             </button>
           ))}
