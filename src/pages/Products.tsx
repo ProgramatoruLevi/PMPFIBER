@@ -3,8 +3,9 @@ import { useSearchParams } from 'react-router-dom';
 import SEO from '../components/SEO';
 import PageHeader from '../components/PageHeader';
 import ProductGrid from '../components/ProductGrid';
+import ProductFilters from '../components/ProductFilters';
 import CTASection from '../components/CTASection';
-import { allProducts, filters } from '../data/products';
+import { allProducts, getFilter } from '../data/products';
 import {
   organizationLd,
   breadcrumbLd,
@@ -37,10 +38,7 @@ export default function Products() {
     }
   };
 
-  const visible = useMemo(() => {
-    const f = filters.find((x) => x.id === active) ?? filters[0];
-    return allProducts.filter(f.match);
-  }, [active]);
+  const visible = useMemo(() => allProducts.filter(getFilter(active).match), [active]);
 
   return (
     <>
@@ -64,29 +62,18 @@ export default function Products() {
 
       <section className="section">
         <div className="container-px">
-          {/* Filtre */}
-          <div className="-mx-1 flex flex-wrap gap-2 pb-2">
-            {filters.map((f) => (
-              <button
-                key={f.id}
-                type="button"
-                onClick={() => selectFilter(f.id)}
-                className={`rounded-full border px-4 py-2 text-sm font-medium transition-all ${
-                  active === f.id
-                    ? 'border-gold bg-gold-gradient text-ink-950'
-                    : 'border-white/10 bg-ink-800/50 text-sand hover:border-gold/40 hover:text-cream'
-                }`}
-              >
-                {f.label}
-              </button>
-            ))}
-          </div>
+          <ProductFilters
+            active={active}
+            onSelect={selectFilter}
+            resultCount={visible.length}
+          />
 
-          <p className="mt-5 text-sm text-sand/70">
-            {visible.length} {visible.length === 1 ? 'model' : 'modele'} disponibile
+          <p className="mt-6 text-sm text-sand/70">
+            <span className="font-semibold text-cream">{visible.length}</span>{' '}
+            {visible.length === 1 ? 'model disponibil' : 'modele disponibile'}
           </p>
 
-          <div className="mt-8">
+          <div className="mt-6">
             <ProductGrid products={visible} columns={3} />
           </div>
         </div>

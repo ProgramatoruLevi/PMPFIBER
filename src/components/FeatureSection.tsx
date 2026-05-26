@@ -33,7 +33,7 @@ const features: Feature[] = [
 
 export default function FeatureSection() {
   return (
-    <section className="section relative">
+    <section className="section relative hidden md:block">
       <div className="container-px">
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {features.map((f, i) => (

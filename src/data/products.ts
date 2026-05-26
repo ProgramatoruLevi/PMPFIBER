@@ -628,7 +628,7 @@ export interface Filter {
 }
 
 export const filters: Filter[] = [
-  { id: 'toate', label: 'Toate', match: () => true },
+  { id: 'toate', label: 'Toate modelele', match: () => true },
   { id: '200', label: '200 cm', match: (p) => p.size === '200' },
   { id: '225', label: '225 cm', match: (p) => p.size === '225' },
   { id: 'rotund', label: 'Rotunde', match: (p) => p.shape === 'rotund' },
@@ -640,3 +640,18 @@ export const filters: Filter[] = [
   { id: 'icetube', label: 'IceTube', match: (p) => p.category === 'icetube' },
   { id: 'cuve', label: 'Cuve', match: (p) => p.category === 'cuve' },
 ];
+
+/** Filtrele organizate pe categorii, pentru un UI grupat și scanabil. */
+export const filterGroups: { label: string; ids: string[] }[] = [
+  { label: 'Dimensiune', ids: ['200', '225'] },
+  { label: 'Formă', ids: ['rotund', 'patrat'] },
+  { label: 'Gamă', ids: ['base', 'comfort', 'luxury'] },
+  { label: 'Tip produs', ids: ['incastrabil', 'icetube', 'cuve'] },
+];
+
+export const getFilter = (id: string): Filter =>
+  filters.find((f) => f.id === id) ?? filters[0];
+
+/** Câte produse corespund unui filtru (pentru badge-urile de numărător). */
+export const countFor = (id: string): number =>
+  allProducts.filter(getFilter(id).match).length;
