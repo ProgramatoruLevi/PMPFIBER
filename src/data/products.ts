@@ -521,7 +521,7 @@ export const products: Product[] = [
       'Disponibil pentru model rotund 225 cm',
       'Disponibil pentru model pătrat 200 × 200 cm',
     ],
-    prices: [{ label: 'Preț de la', price: 4000 }],
+    prices: [{ label: 'Preț', price: 4000 }],
     availableFor: ['Model rotund 200 cm', 'Model rotund 225 cm', 'Model pătrat 200 × 200 cm'],
     components: [
       { label: 'Cadă ciubăr din fibră de sticlă cu inel montaj', price: 2700 },
@@ -541,7 +541,7 @@ export const products: Product[] = [
       'Spații SPA moderne',
       'Pensiuni și cabane',
     ],
-    badges: ['Modular', 'Montaj încastrat', 'De la 4.000 lei'],
+    badges: ['Modular', 'Montaj încastrat', '4.000 lei'],
     tags: ['incastrabil'],
   },
 
@@ -625,13 +625,13 @@ export const products: Product[] = [
         price: 3000,
       },
     ],
-    prices: [{ label: 'De la', price: 2700 }],
+    prices: [{ label: 'Preț', price: 2700 }],
     optionals: [
       { label: 'Capac din fibră de sticlă', price: 500 },
       { label: 'Capac termoizolant', price: 1500 },
     ],
     recommendedFor: ['Proiecte SPA încastrabile', 'Mini piscine', 'Ciubăre la comandă'],
-    badges: ['Fibră de sticlă', '4 variante', 'De la 2.700 lei'],
+    badges: ['Fibră de sticlă', '4 variante', '2.700 lei'],
     tags: ['cuve'],
   },
 ];

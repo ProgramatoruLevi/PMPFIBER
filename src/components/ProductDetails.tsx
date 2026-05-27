@@ -109,13 +109,13 @@ export default function ProductDetails({ product: p }: Props) {
                   ))}
                 </div>
               )}
-              <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-sand">
-                <span className="inline-flex items-center gap-1.5">
-                  <BadgeCheck className="h-4 w-4 text-gold-light" />
+              <div className="mt-3 flex flex-wrap items-center gap-2.5 text-sm font-bold">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-[#ff5d4d]/40 bg-[#ff5d4d]/10 px-3 py-1.5 text-[#ff6b5b]">
+                  <BadgeCheck className="h-4 w-4" />
                   Toate prețurile includ TVA
                 </span>
-                <span className="inline-flex items-center gap-1.5">
-                  <ShieldCheck className="h-4 w-4 text-gold-light" />
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-[#ff5d4d]/40 bg-[#ff5d4d]/10 px-3 py-1.5 text-[#ff6b5b]">
+                  <ShieldCheck className="h-4 w-4" />
                   Garanție 2 ani
                 </span>
               </div>
