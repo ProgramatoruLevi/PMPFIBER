@@ -85,11 +85,13 @@ export default function ProductCard({ product, index = 0 }: Props) {
         {/* Preț + acțiuni */}
         <div className="mt-5 flex items-end justify-between border-t border-white/10 pt-4">
           <div>
-            <span className="font-display text-2xl font-semibold text-gold-light">
+            <span className="font-display text-3xl font-bold leading-none text-gold-light sm:text-[2rem]">
               {formatLei(from)}
             </span>
-            <span className="mt-1 block text-[11px] font-bold text-[#ff5d4d]">
-              TVA inclus · garanție 2 ani
+            <span className="mt-1.5 flex flex-wrap items-center gap-x-1.5 text-[11px] font-bold">
+              <span className="text-[#ff5d4d]">TVA inclus</span>
+              <span className="text-sand/40">·</span>
+              <span className="text-[#34d27f]">garanție 2 ani</span>
             </span>
           </div>
         </div>

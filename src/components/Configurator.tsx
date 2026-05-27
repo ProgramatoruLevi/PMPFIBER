@@ -270,8 +270,10 @@ export default function Configurator() {
               <p className="mt-1 text-xs text-sand/60">
                 Estimare orientativă, TVA inclus. Prețul final îl confirmăm la cerere.
               </p>
-              <p className="mt-1.5 text-sm font-bold text-[#ff6b5b]">
-                Toate prețurile includ TVA · Garanție 2 ani
+              <p className="mt-1.5 text-sm font-bold">
+                <span className="text-[#ff6b5b]">Toate prețurile includ TVA</span>
+                <span className="text-sand/40"> · </span>
+                <span className="text-[#4ade80]">Garanție 2 ani</span>
               </p>
             </div>
 

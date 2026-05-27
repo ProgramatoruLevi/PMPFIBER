@@ -94,7 +94,7 @@ export default function AccessoryDetail() {
                     <BadgeCheck className="h-4 w-4" />
                     Prețul include TVA
                   </span>
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-[#ff5d4d]/40 bg-[#ff5d4d]/10 px-3 py-1.5 text-[#ff6b5b]">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-[#34d27f]/40 bg-[#34d27f]/10 px-3 py-1.5 text-[#4ade80]">
                     <ShieldCheck className="h-4 w-4" />
                     Garanție 2 ani
                   </span>
