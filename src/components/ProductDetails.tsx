@@ -9,6 +9,8 @@ import {
   Box,
   Layers,
   ChevronRight,
+  BadgeCheck,
+  ShieldCheck,
 } from 'lucide-react';
 import {
   type Product,
@@ -107,6 +109,16 @@ export default function ProductDetails({ product: p }: Props) {
                   ))}
                 </div>
               )}
+              <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-sand">
+                <span className="inline-flex items-center gap-1.5">
+                  <BadgeCheck className="h-4 w-4 text-gold-light" />
+                  Toate prețurile includ TVA
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <ShieldCheck className="h-4 w-4 text-gold-light" />
+                  Garanție 2 ani
+                </span>
+              </div>
             </div>
 
             {/* CTA — accent pe apel */}

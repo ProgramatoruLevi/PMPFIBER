@@ -91,6 +91,9 @@ export default function ProductCard({ product, index = 0 }: Props) {
             <span className="font-display text-2xl font-semibold text-gold-light">
               {formatLei(from)}
             </span>
+            <span className="mt-0.5 block text-[10px] text-sand/55">
+              TVA inclus · garanție 2 ani
+            </span>
           </div>
         </div>
 

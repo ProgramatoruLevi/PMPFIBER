@@ -39,6 +39,6 @@ export const faqs: FaqItem[] = [
   {
     question: 'Prețurile includ TVA?',
     answer:
-      'Pentru detalii exacte privind prețul final, TVA și opțiunile de livrare, te invităm să ne contactezi telefonic sau să soliciți o ofertă personalizată. Îți pregătim un preț clar pentru configurația aleasă.',
+      'Da, toate prețurile afișate includ TVA. În plus, fiecare ciubăr PMPFiber beneficiază de garanție 2 ani. Pentru detalii privind opțiunile de livrare și o ofertă personalizată pentru configurația aleasă, ne poți contacta telefonic.',
   },
 ];

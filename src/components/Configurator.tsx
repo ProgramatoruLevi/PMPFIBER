@@ -268,7 +268,10 @@ export default function Configurator() {
                 </motion.p>
               </AnimatePresence>
               <p className="mt-1 text-xs text-sand/60">
-                Estimare orientativă. Prețul final îl confirmăm la cerere.
+                Estimare orientativă, TVA inclus. Prețul final îl confirmăm la cerere.
+              </p>
+              <p className="mt-1 text-xs text-gold-light/80">
+                Toate prețurile includ TVA · Garanție 2 ani
               </p>
             </div>
 
