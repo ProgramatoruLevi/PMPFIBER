@@ -25,6 +25,29 @@ const values = [
   },
 ];
 
+const timeline = [
+  {
+    year: '2001',
+    title: 'Începutul în fibră de sticlă',
+    text: 'Bunicul nostru pune bazele activității: căzi de baie, aripi și capote pentru Dacia, tobogane — și un know-how solid în prelucrarea fibrei de sticlă.',
+  },
+  {
+    year: '2023',
+    title: 'Primele cuve pentru ciubere',
+    text: 'Ducem tradiția de familie mai departe și începem producția de cuve din fibră de sticlă pentru ciubere.',
+  },
+  {
+    year: '2024',
+    title: 'Ciubere complete',
+    text: 'De la mijlocul anului dezvoltăm producția de ciubere complete, gata echipate și pregătite pentru utilizare.',
+  },
+  {
+    year: 'Azi',
+    title: 'Relaxare la tine acasă',
+    text: 'Ciubere finisate, îmbrăcate în lambriu de calitate, cu hidromasaj și aeromasaj — realizate integral în România.',
+  },
+];
+
 export default function About() {
   return (
     <>
@@ -44,7 +67,7 @@ export default function About() {
       <PageHeader
         eyebrow="Despre noi"
         title="Ciubăre premium, fabricate cu atenție la detalii"
-        subtitle="PMPFIBER este un brand românesc dedicat relaxării autentice. Construim ciubăre din fibră de sticlă și lemn, gândite pentru confort în orice sezon."
+        subtitle="Afacere de familie 100% românească, cu tradiție în prelucrarea fibrei de sticlă din 2001. Construim ciubăre complete, gata echipate pentru relaxare autentică în orice sezon."
         crumbs={[{ name: 'Acasă', path: '/' }, { name: 'Despre noi' }]}
       />
 
@@ -67,30 +90,60 @@ export default function About() {
               Cine suntem
             </span>
             <h2 className="mt-4 font-display text-3xl font-semibold leading-tight text-cream sm:text-4xl">
-              Pasiune pentru relaxare, construită în România
+              O afacere de familie, 100% românească
             </h2>
             <div className="mt-5 space-y-4 text-base leading-relaxed text-sand">
               <p>
-                PMPFIBER SRL produce ciubăre premium din fibră de sticlă și lemn,
-                în județul Bistrița-Năsăud. Ne-am propus să aducem mai aproape de
-                oameni experiența relaxării în apă caldă, în mijlocul naturii.
+                PMPFiber este o afacere de familie 100% românească, construită pe
+                tradiție, experiență și pasiunea pentru calitate.
               </p>
               <p>
-                Fiecare produs este construit cu materiale de calitate și echipat
-                pentru confort în orice anotimp: corp izolat cu spumă poliuretanică,
-                sobă din inox și finisaje rezistente la intemperii.
+                Povestea noastră începe în anul 2001, când bunicul nostru a pus
+                bazele activității în domeniul fibrei de sticlă. De-a lungul anilor
+                a realizat o gamă variată de produse — de la căzi de baie, aripi și
+                capote pentru Dacia, până la tobogane — acumulând o experiență
+                valoroasă și un know-how solid în prelucrarea acestui material.
               </p>
               <p>
-                Lucrăm cu clienți privați, cabane, pensiuni și zone wellness și
-                configurăm fiecare ciubăr în funcție de spațiul și nevoile lor.
+                Ne mândrim că toate produsele noastre sunt realizate în România, cu
+                atenție la detalii, materiale durabile și respect pentru client.
               </p>
             </div>
           </Reveal>
         </div>
       </section>
 
-      {/* Valori */}
+      {/* Parcursul nostru */}
       <section className="section bg-ink-900">
+        <div className="container-px">
+          <SectionHeading
+            eyebrow="Parcursul nostru"
+            title="De la fibră de sticlă la ciubere complete"
+          />
+          <ol className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {timeline.map((t, i) => (
+              <Reveal key={t.year} delay={i * 0.1}>
+                <li className="relative h-full rounded-2xl border border-white/10 bg-ink-800/50 p-7">
+                  <span className="font-display text-3xl font-bold text-gold-light">
+                    {t.year}
+                  </span>
+                  <h3 className="mt-3 text-lg font-semibold text-cream">{t.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-sand">{t.text}</p>
+                </li>
+              </Reveal>
+            ))}
+          </ol>
+          <Reveal delay={0.2}>
+            <p className="mx-auto mt-12 max-w-3xl text-center font-display text-xl italic text-cream/90 sm:text-2xl">
+              PMPFiber — tradiție românească dusă mai departe prin{' '}
+              <span className="text-gold-light">calitate și inovație</span>.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Valori */}
+      <section className="section">
         <div className="container-px">
           <SectionHeading eyebrow="Valorile noastre" title="Ce ne ghidează" />
           <div className="mt-12 grid gap-6 md:grid-cols-3">
@@ -110,7 +163,7 @@ export default function About() {
       </section>
 
       {/* Date firmă */}
-      <section className="section">
+      <section className="section bg-ink-900">
         <div className="container-px">
           <Reveal>
             <div className="overflow-hidden rounded-3xl border border-white/10 bg-ink-800/40">

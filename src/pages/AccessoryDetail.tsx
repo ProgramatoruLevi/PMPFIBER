@@ -45,7 +45,9 @@ export default function AccessoryDetail() {
         description={`${acc.description} Accesoriu PMPFiber, ${formatLei(acc.price)}${acc.unit ? ` / ${acc.unit}` : ''}. Cere ofertă sau sună acum.`}
         path={path}
         image={acc.images[0]}
+        imageAlt={`${acc.name} — accesoriu ciubăr PMPFiber`}
         type="product"
+        priceAmount={acc.price}
         jsonLd={[
           organizationLd(),
           productLd,

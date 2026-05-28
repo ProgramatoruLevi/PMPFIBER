@@ -6,7 +6,7 @@ import ProductGrid from '../components/ProductGrid';
 import SectionHeading from '../components/SectionHeading';
 import CTASection from '../components/CTASection';
 import NotFound from './NotFound';
-import { getProductBySlug, getRelated, productPath } from '../data/products';
+import { getProductBySlug, getRelated, productPath, getFromPrice } from '../data/products';
 import { organizationLd, productLd, breadcrumbLd } from '../utils/seo';
 
 export default function ProductDetail() {
@@ -25,7 +25,9 @@ export default function ProductDetail() {
         description={`${product.description} ${product.categoryLabel}. Producător PMPFiber. Cere ofertă sau sună acum.`}
         path={path}
         image={product.images[0]}
+        imageAlt={`${product.name} — ${product.categoryLabel}`}
         type="product"
+        priceAmount={getFromPrice(product)}
         jsonLd={[
           organizationLd(),
           productLd(product),
