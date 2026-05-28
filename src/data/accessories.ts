@@ -22,7 +22,7 @@ export const accessories: Accessory[] = [
       'Termometru flotant pentru monitorizarea precisă a temperaturii apei.',
     longDescription:
       'Termometru flotant pentru monitorizarea precisă a temperaturii apei, esențial pentru o experiență de relaxare controlată. Plutește la suprafață și se citește ușor, indiferent de anotimp.',
-    images: ['/images/termometru.jpeg'],
+    images: ['/images/termometru.webp'],
     features: ['Citire ușoară', 'Rezistent la apă', 'Compatibil cu toate modelele PMPFiber'],
   },
   {
@@ -32,7 +32,7 @@ export const accessories: Accessory[] = [
     description: 'Suport din lemn pentru 4 pahare, fixat pe marginea ciubărului.',
     longDescription:
       'Suport din lemn pentru 4 pahare, fixat pe marginea ciubărului. Finisaj premium, asortat designului produselor PMPFiber — perfect pentru momentele de relaxare în grup.',
-    images: ['/images/suport_pahare_mare_4locuri.jpeg'],
+    images: ['/images/suport_pahare_mare_4locuri.webp'],
     features: ['4 locuri pentru pahare', 'Lemn finisat premium', 'Montare pe marginea ciubărului'],
   },
   {
@@ -42,7 +42,7 @@ export const accessories: Accessory[] = [
     description: 'Suport din lemn pentru 3 pahare, compact și elegant.',
     longDescription:
       'Suport din lemn pentru 3 pahare, compact și elegant, perfect pentru momentele de relaxare în doi. Finisaj asortat designului PMPFiber.',
-    images: ['/images/suport_pahare_mic_3locuri.jpeg'],
+    images: ['/images/suport_pahare_mic_3locuri.webp'],
     features: ['3 locuri pentru pahare', 'Compact și elegant', 'Lemn finisat premium'],
   },
   {
@@ -54,7 +54,7 @@ export const accessories: Accessory[] = [
     longDescription:
       'Tetieră ergonomică suplimentară pentru confort maxim. Se adaugă oricărui model pentru sprijin optim al cefei, în timpul relaxării.',
     // TODO: înlocuiește cu poza reală — pune fișierul în public/images/ ca „tetiera.jpeg".
-    images: ['/images/tetiera.jpeg'],
+    images: ['/images/tetiera.webp'],
     features: ['Ergonomică', 'Sprijin optim pentru ceafă', 'Compatibilă cu toate modelele'],
   },
   {
@@ -66,7 +66,7 @@ export const accessories: Accessory[] = [
       'Iluminare LED multicolor cu acționare pneumatică, pentru o atmosferă relaxantă pe timp de seară. Schimbi culoarea simplu, cu o atingere — fără cabluri vizibile.',
     // TODO: înlocuiește cu cele 2 poze reale — pune fișierele în public/images/
     // ca „bec_led_1.jpeg" și „bec_led_2.jpeg".
-    images: ['/images/bec_led_1.jpeg', '/images/bec_led_2.jpeg'],
+    images: ['/images/bec_led_1.webp', '/images/bec_led_2.webp'],
     features: ['Multiple culori', 'Acționare pneumatică', 'Atmosferă relaxantă seara'],
   },
 ];

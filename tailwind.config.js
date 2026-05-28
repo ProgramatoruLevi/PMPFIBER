@@ -23,7 +23,7 @@ export default {
         sand: '#BDB6AA',
       },
       fontFamily: {
-        serif: ['"Cormorant Garamond"', 'Playfair Display', 'Georgia', 'serif'],
+        serif: ['"Playfair Display"', 'Georgia', 'serif'],
         display: ['"Playfair Display"', 'Georgia', 'serif'],
         sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
       },

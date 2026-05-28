@@ -3,21 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="/images/logo_PMP_FIBER.png" />
+    <link rel="icon" type="image/webp" href="/images/logo_PMP_FIBER.webp" />
     <meta name="theme-color" content="#0E0F0D" />
 
-    <!-- Fonts: preconnect + display swap to avoid layout shift -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Fonturi LOCALE (GDPR-compliant, zero requesturi externe) -->
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/plus-jakarta-sans-400-latin.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/plus-jakarta-sans-400-latin-ext.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/playfair-display-700-latin.woff2" crossorigin />
+    <link rel="stylesheet" href="/fonts/fonts.css" />
 
     <!-- Preload hero image to improve LCP -->
-    <link rel="preload" as="image" href="/images/imagine_background_hero.png" />
+    <link rel="preload" as="image" href="/images/imagine_background_hero.webp" />
 
     <!-- title + meta description sunt setate per pagină de componenta SEO (react-helmet-async). -->
+    <!-- NIMIC tracking aici. GA se încarcă dinamic doar după consimțământ (vezi src/utils/analytics.ts). -->
   </head>
   <body>
     <div id="root"></div>

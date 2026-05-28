@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import FloatingActions from '../components/FloatingActions';
 import ScrollToTop from '../components/ScrollToTop';
+import CookieBanner from '../components/CookieBanner';
 
 export default function MainLayout() {
   return (
@@ -14,6 +15,7 @@ export default function MainLayout() {
       </main>
       <Footer />
       <FloatingActions />
+      <CookieBanner />
     </div>
   );
 }

@@ -10,6 +10,10 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
+import Privacy from './pages/legal/Privacy';
+import Terms from './pages/legal/Terms';
+import Cookies from './pages/legal/Cookies';
+import CookieSettings from './pages/legal/CookieSettings';
 import NotFound from './pages/NotFound';
 import { ciubareProducts } from './data/products';
 import { accessories } from './data/accessories';
@@ -43,6 +47,11 @@ export const routes: RouteRecord[] = [
         element: <BlogPost />,
         getStaticPaths: () => blogPosts.map((p) => `/blog/${p.slug}`),
       },
+      // Pagini legale (noindex, dar prerandate pentru robusteză + acces direct)
+      { path: 'confidentialitate', element: <Privacy /> },
+      { path: 'termeni', element: <Terms /> },
+      { path: 'cookie', element: <Cookies /> },
+      { path: 'setari-cookie', element: <CookieSettings /> },
       { path: '*', element: <NotFound /> },
     ],
   },

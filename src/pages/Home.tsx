@@ -142,7 +142,7 @@ export default function Home() {
             <Reveal>
               <div className="relative overflow-hidden rounded-3xl border border-white/10">
                 <img
-                  src="/images/imagine_background_hero.png"
+                  src="/images/imagine_background_hero.webp"
                   alt="Ciubăr PMPFiber într-un peisaj montan, la apus de soare"
                   loading="lazy"
                   className="aspect-[4/3] w-full object-cover"

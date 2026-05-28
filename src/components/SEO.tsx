@@ -31,9 +31,11 @@ export default function SEO({
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
       <link rel="canonical" href={canonical} />
+      <link rel="alternate" hrefLang="ro-RO" href={canonical} />
+      <link rel="alternate" hrefLang="x-default" href={canonical} />
       <meta
         name="robots"
-        content={noindex ? 'noindex, nofollow' : 'index, follow'}
+        content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'}
       />
 
       {/* OpenGraph */}

@@ -25,7 +25,7 @@ export const blogPosts: BlogPost[] = [
       'Capacitate, dimensiune, dotări și tipul capacului — un ghid clar pentru a alege ciubărul potrivit spațiului și nevoilor tale.',
     date: '2025-11-10',
     readingTime: '5 min',
-    cover: '/images/ciubar1.png',
+    cover: '/images/ciubar1.webp',
     sections: [
       {
         paragraphs: [
@@ -64,7 +64,7 @@ export const blogPosts: BlogPost[] = [
       'Cele două sisteme oferă senzații diferite. Iată cum funcționează fiecare și cum alegi varianta potrivită stilului tău de relaxare.',
     date: '2025-11-24',
     readingTime: '4 min',
-    cover: '/images/ciubar3.png',
+    cover: '/images/ciubar3.webp',
     sections: [
       {
         paragraphs: [
@@ -98,7 +98,7 @@ export const blogPosts: BlogPost[] = [
       'Izolația cu spumă poliuretanică face diferența între un ciubăr eficient și unul care pierde căldură. Iată de ce contează.',
     date: '2025-12-08',
     readingTime: '4 min',
-    cover: '/images/ciubar13.png',
+    cover: '/images/ciubar13.webp',
     sections: [
       {
         paragraphs: [

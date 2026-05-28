@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 56" role="img" aria-label="ANPC Soluționarea Alternativă a Litigiilor">
+  <defs>
+    <linearGradient id="anpc-sal-grad" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#1f4fa8"/>
+      <stop offset="1" stop-color="#0d2c66"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="56" rx="8" fill="url(#anpc-sal-grad)"/>
+  <rect x="0" y="0" width="56" height="56" rx="8" fill="#0a2456"/>
+  <text x="28" y="24" text-anchor="middle" font-family="-apple-system, Segoe UI, Roboto, sans-serif" font-size="14" font-weight="800" fill="#ffffff" letter-spacing="0.5">ANPC</text>
+  <text x="28" y="42" text-anchor="middle" font-family="-apple-system, Segoe UI, Roboto, sans-serif" font-size="11" font-weight="700" fill="#fcd34d">SAL</text>
+  <text x="68" y="24" font-family="-apple-system, Segoe UI, Roboto, sans-serif" font-size="11" font-weight="700" fill="#ffffff" letter-spacing="0.3">Soluționarea</text>
+  <text x="68" y="38" font-family="-apple-system, Segoe UI, Roboto, sans-serif" font-size="11" font-weight="600" fill="#dbeafe" letter-spacing="0.2">Alternativă a Litigiilor</text>
+</svg>

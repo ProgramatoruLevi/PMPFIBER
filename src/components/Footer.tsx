@@ -1,8 +1,15 @@
 import { Link } from 'react-router-dom';
-import { Phone, MapPin, Clock, MessageCircle, Building2 } from 'lucide-react';
+import { Phone, MapPin, Clock, MessageCircle, Building2, ExternalLink } from 'lucide-react';
 import { company, telLink, whatsappLink, navLinks } from '../data/company';
 
 const year = new Date().getFullYear();
+
+const legalLinks = [
+  { label: 'Termeni și condiții', to: '/termeni' },
+  { label: 'Politică de confidențialitate', to: '/confidentialitate' },
+  { label: 'Politică de cookie-uri', to: '/cookie' },
+  { label: 'Setări cookie', to: '/setari-cookie' },
+];
 
 export default function Footer() {
   return (
@@ -12,7 +19,7 @@ export default function Footer() {
         {/* Brand */}
         <div className="lg:col-span-1">
           <img
-            src="/images/logo_PMP_FIBER.png"
+            src="/images/logo_PMP_FIBER.webp"
             alt="PMPFIBER"
             className="h-10 w-auto"
           />
@@ -32,6 +39,28 @@ export default function Footer() {
             >
               <MessageCircle className="h-4 w-4" />
               WhatsApp
+            </a>
+          </div>
+
+          {/* Badge-uri ANPC */}
+          <div className="mt-7 space-y-2.5">
+            <a
+              href="https://anpc.ro/ce-este-sal/"
+              target="_blank"
+              rel="noreferrer"
+              className="block max-w-[200px] transition-opacity hover:opacity-80"
+              aria-label="ANPC — Soluționarea Alternativă a Litigiilor"
+            >
+              <img src="/images/anpc-sal.svg" alt="ANPC SAL — Soluționarea Alternativă a Litigiilor" className="h-12 w-auto" />
+            </a>
+            <a
+              href="https://ec.europa.eu/consumers/odr"
+              target="_blank"
+              rel="noreferrer"
+              className="block max-w-[200px] transition-opacity hover:opacity-80"
+              aria-label="ANPC — Soluționarea Online a Litigiilor (ODR UE)"
+            >
+              <img src="/images/anpc-sol.svg" alt="ANPC SOL — Soluționarea Online a Litigiilor (ODR UE)" className="h-12 w-auto" />
             </a>
           </div>
         </div>
@@ -56,6 +85,17 @@ export default function Footer() {
               </Link>
             </li>
           </ul>
+
+          <h3 className="mt-8 font-display text-lg text-cream">Legal</h3>
+          <ul className="mt-5 space-y-3">
+            {legalLinks.map((l) => (
+              <li key={l.to}>
+                <Link to={l.to} className="text-sm text-sand transition-colors hover:text-gold-light">
+                  {l.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
 
         {/* Contact */}
@@ -75,6 +115,43 @@ export default function Footer() {
             <li className="flex items-start gap-3">
               <Clock className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
               <span>{company.schedule}</span>
+            </li>
+          </ul>
+
+          <h3 className="mt-8 font-display text-lg text-cream">ANPC — Linkuri utile</h3>
+          <ul className="mt-4 space-y-2.5 text-sm">
+            <li>
+              <a
+                href="https://anpc.ro/ce-este-sal/"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1.5 text-sand transition-colors hover:text-gold-light"
+              >
+                Soluționarea Alternativă a Litigiilor
+                <ExternalLink className="h-3 w-3" />
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://ec.europa.eu/consumers/odr"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1.5 text-sand transition-colors hover:text-gold-light"
+              >
+                Soluționarea Online a Litigiilor
+                <ExternalLink className="h-3 w-3" />
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://ec.europa.eu/consumers/odr"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1.5 text-sand transition-colors hover:text-gold-light"
+              >
+                Platforma ODR — Uniunea Europeană
+                <ExternalLink className="h-3 w-3" />
+              </a>
             </li>
           </ul>
         </div>

@@ -54,7 +54,7 @@ export default function About() {
           <Reveal>
             <div className="overflow-hidden rounded-3xl border border-white/10">
               <img
-                src="/images/ciubar1.png"
+                src="/images/ciubar1.webp"
                 alt="Ciubăr PMPFiber din lemn premium"
                 loading="lazy"
                 className="aspect-[4/3] w-full object-cover"

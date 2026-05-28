@@ -5,10 +5,11 @@ import PageHeader from '../components/PageHeader';
 import ProductGrid from '../components/ProductGrid';
 import ProductFilters from '../components/ProductFilters';
 import CTASection from '../components/CTASection';
-import { allProducts, getFilter } from '../data/products';
+import { allProducts, getFilter, ciubareProducts } from '../data/products';
 import {
   organizationLd,
   breadcrumbLd,
+  itemListLd,
   type SeoMeta,
 } from '../utils/seo';
 
@@ -50,6 +51,7 @@ export default function Products() {
             { name: 'Acasă', path: '/' },
             { name: 'Ciubăre', path: '/ciubare' },
           ]),
+          itemListLd(ciubareProducts),
         ]}
       />
 

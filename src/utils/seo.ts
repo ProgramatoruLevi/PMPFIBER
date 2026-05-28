@@ -5,7 +5,7 @@ import { getFromPrice, productPath } from '../data/products';
 import type { FaqItem } from '../data/faq';
 
 export const SITE = company.siteUrl;
-export const DEFAULT_OG_IMAGE = `${SITE}/images/imagine_background_hero.png`;
+export const DEFAULT_OG_IMAGE = `${SITE}/images/imagine_background_hero.webp`;
 
 export const absUrl = (path: string): string =>
   path.startsWith('http') ? path : `${SITE}${path.startsWith('/') ? '' : '/'}${path}`;
@@ -31,7 +31,7 @@ export const organizationLd = () => ({
   url: SITE,
   telephone: company.phoneDisplay,
   image: DEFAULT_OG_IMAGE,
-  logo: `${SITE}/images/logo_PMP_FIBER.png`,
+  logo: `${SITE}/images/logo_PMP_FIBER.webp`,
   priceRange: '$$',
   vatID: `RO${company.cui}`,
   taxID: company.cui,
@@ -44,7 +44,17 @@ export const organizationLd = () => ({
     postalCode: company.postalCode,
     addressCountry: 'RO',
   },
+  contactPoint: [
+    {
+      '@type': 'ContactPoint',
+      telephone: company.phoneDisplay,
+      contactType: 'sales',
+      areaServed: 'RO',
+      availableLanguage: ['Romanian'],
+    },
+  ],
   areaServed: { '@type': 'Country', name: 'România' },
+  knowsLanguage: ['ro'],
 });
 
 export const websiteLd = () => ({
@@ -62,10 +72,11 @@ export const productLd = (p: Product) => ({
   '@type': 'Product',
   name: p.name,
   description: p.description,
-  image: absUrl(p.images[0]),
+  image: p.images.map((img) => absUrl(img)),
   sku: p.slug,
   category: p.categoryLabel,
   brand: { '@type': 'Brand', name: company.brand },
+  manufacturer: { '@id': `${SITE}/#organization` },
   offers: {
     '@type': 'Offer',
     url: absUrl(productPath(p)),
@@ -74,7 +85,25 @@ export const productLd = (p: Product) => ({
     availability: 'https://schema.org/InStock',
     itemCondition: 'https://schema.org/NewCondition',
     seller: { '@id': `${SITE}/#organization` },
+    hasMerchantReturnPolicy: {
+      '@type': 'MerchantReturnPolicy',
+      applicableCountry: 'RO',
+      returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+      merchantReturnDays: 14,
+    },
   },
+});
+
+/** ItemList JSON-LD pentru pagina /ciubare — îmbunătățește rezultatele rich list. */
+export const itemListLd = (products: Product[]) => ({
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  itemListElement: products.map((p, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    url: absUrl(productPath(p)),
+    name: p.name,
+  })),
 });
 
 export interface Crumb {

@@ -2,7 +2,7 @@
 //  PRODUSE PMPFIBER
 //  Aici modifici TOATE produsele site-ului: nume, descriere, dotări, prețuri,
 //  imagini. Imaginile sunt servite din /public/images (referite prin path
-//  absolut, ex: "/images/ciubar1.png"). Pentru a schimba o imagine, înlocuiește
+//  absolut, ex: "/images/ciubar1.webp"). Pentru a schimba o imagine, înlocuiește
 //  fișierul din /public/images sau modifică array-ul `images` al produsului.
 // ============================================================================
 
@@ -69,9 +69,9 @@ export interface Product {
 
 const IMG = (n: string) => `/images/${n}`;
 
-/** Galerie multi-imagine dintr-un subfolder (ex. `/images/base-200/img-1..N.jpeg`). */
+/** Galerie multi-imagine dintr-un subfolder (ex. `/images/base-200/img-1..N.webp`). */
 const GALLERY = (folder: string, count: number): string[] =>
-  Array.from({ length: count }, (_, i) => `/images/${folder}/img-${i + 1}.jpeg`);
+  Array.from({ length: count }, (_, i) => `/images/${folder}/img-${i + 1}.webp`);
 
 export const products: Product[] = [
   // 1 ─────────────────────────────────────────────────────────────────────
@@ -88,7 +88,7 @@ export const products: Product[] = [
     description: 'Model simplu, ideal pentru relaxare tradițională.',
     longDescription:
       'PMPFiber Base 200 este alegerea echilibrată pentru cei care își doresc experiența autentică a unui ciubăr cu apă caldă, fără dotări suplimentare. Corpul din fibră de sticlă izolat cu spumă poliuretanică păstrează temperatura, iar soba din inox încălzește apa eficient.',
-    images: GALLERY('base-200', 6),
+    images: [IMG('ciubar1.webp'), ...GALLERY('base-200', 6)],
     features: [
       'Diametru ciubăr: 200 cm',
       'Variantă clasică, fără dotări suplimentare',
@@ -123,7 +123,7 @@ export const products: Product[] = [
     description: 'Confort și relaxare, cu sistem de aeromasaj sau hidromasaj.',
     longDescription:
       'PMPFiber Comfort 200 adaugă confortului tradițional un plus de relaxare prin sistemul de masaj și iluminarea LED multicolor. Panoul electric cu siguranță face utilizarea simplă și sigură pe tot parcursul anului.',
-    images: GALLERY('comfort-200', 5),
+    images: [IMG('ciubar2.webp'), ...GALLERY('comfort-200', 5)],
     features: [
       'Diametru ciubăr: 200 cm',
       'Sistem aeromasaj sau hidromasaj',
@@ -164,7 +164,7 @@ export const products: Product[] = [
     description: 'Experiență completă de spa.',
     longDescription:
       'PMPFiber Luxury 200 este experiența completă de spa, cu aeromasaj și hidromasaj, tetiere, suport pentru pahare și termometru. Fiecare detaliu este gândit pentru relaxare premium, în orice anotimp.',
-    images: GALLERY('luxury-200', 3),
+    images: [IMG('ciubar3.webp'), ...GALLERY('luxury-200', 3)],
     features: [
       'Diametru ciubăr: 200 cm',
       'Aeromasaj cu 12 duze',
@@ -204,7 +204,7 @@ export const products: Product[] = [
     description: 'Model simplu pentru familie sau grupuri.',
     longDescription:
       'PMPFiber Family 225 Base este construit pentru grupuri mari și familii numeroase. Soba exterioară și coșul de fum din inox cu pălărie de protecție oferă încălzire eficientă și utilizare comodă.',
-    images: GALLERY('family-225-base', 4),
+    images: [IMG('ciubar4.webp'), ...GALLERY('family-225-base', 4)],
     features: [
       'Diametru ciubăr: 225 cm',
       'Variantă clasică, fără dotări suplimentare',
@@ -238,7 +238,7 @@ export const products: Product[] = [
     description: 'Confort și relaxare pentru familie.',
     longDescription:
       'PMPFiber Family 225 Comfort combină capacitatea generoasă pentru 8–10 persoane cu sistemul de masaj și iluminarea LED, pentru momente de relaxare împărtășite cu cei dragi.',
-    images: GALLERY('family-225-comfort', 5),
+    images: [IMG('ciubar5.webp'), ...GALLERY('family-225-comfort', 5)],
     features: [
       'Diametru ciubăr: 225 cm',
       'Sistem aeromasaj sau hidromasaj',
@@ -274,7 +274,7 @@ export const products: Product[] = [
     description: 'Experiență completă de spa pentru grupuri.',
     longDescription:
       'PMPFiber Family 225 Luxury aduce experiența completă de spa pentru grupuri mari: aeromasaj și hidromasaj, tetiere, suport pentru pahare și termometru, totul într-un format generos de 225 cm.',
-    images: [IMG('ciubar6.png')],
+    images: [IMG('ciubar6.webp')],
     features: [
       'Diametru ciubăr: 225 cm',
       'Aeromasaj cu 12 duze',
@@ -313,7 +313,7 @@ export const products: Product[] = [
     description: 'Model simplu, ideal pentru relaxare modernă și eficiență termică ridicată.',
     longDescription:
       'PMPFiber Premium 225 Base pune accent pe eficiența termică și pe un design modern, curat, cu sobă integrată din inox AISI 304 și bănci interioare ergonomice. O variantă clasică, fără dotări suplimentare, pentru relaxare simplă și autentică.',
-    images: [IMG('ciubar7.png')],
+    images: [IMG('ciubar7.webp')],
     features: [
       'Diametru ciubăr: 225 cm',
       'Variantă clasică, fără dotări suplimentare',
@@ -348,7 +348,7 @@ export const products: Product[] = [
     description: 'Confort și relaxare cu dotări moderne.',
     longDescription:
       'PMPFiber Premium 225 Comfort adaugă designului modern dotări care contează: sistem de masaj, iluminare LED multicolor și panou electric cu siguranță, peste o construcție cu sobă integrată din inox AISI 304 și bănci ergonomice.',
-    images: [IMG('ciubar8.png')],
+    images: [IMG('ciubar8.webp')],
     features: [
       'Diametru ciubăr: 225 cm',
       'Sistem aeromasaj sau hidromasaj',
@@ -385,7 +385,7 @@ export const products: Product[] = [
     description: 'Experiență completă de spa.',
     longDescription:
       'PMPFiber Premium 225 Luxury este expresia maximă a relaxării moderne: aeromasaj, hidromasaj, tetiere, suport pahare și termometru, peste o construcție premium cu sobă integrată din inox AISI 304 și bănci interioare ergonomice.',
-    images: [IMG('ciubar9.png')],
+    images: [IMG('ciubar9.webp')],
     features: [
       'Diametru ciubăr: 225 cm',
       'Aeromasaj cu 12 duze',
@@ -425,7 +425,7 @@ export const products: Product[] = [
     description: 'Model simplu, ideal pentru relaxare modernă în familie sau cu prietenii.',
     longDescription:
       'PMPFiber Square Spa Base 200x200 propune un design modern, pătrat, ideal pentru spațiile contemporane. Variantă clasică, fără dotări suplimentare, pentru relaxare simplă și elegantă.',
-    images: [IMG('ciubar10.png')],
+    images: [IMG('ciubar10.webp')],
     features: [
       'Dimensiune ciubăr: 200 × 200 cm',
       'Variantă clasică, fără dotări suplimentare',
@@ -455,7 +455,7 @@ export const products: Product[] = [
     description: 'Confort și relaxare într-un design modern pătrat.',
     longDescription:
       'PMPFiber Square Spa Comfort 200x200 îmbină linia modernă, pătrată, cu dotări care ridică experiența: sistem de masaj, iluminare LED multicolor și panou electric cu siguranță.',
-    images: [IMG('ciubar11.png')],
+    images: [IMG('ciubar11.webp')],
     features: [
       'Dimensiune ciubăr: 200 × 200 cm',
       'Sistem aeromasaj sau hidromasaj',
@@ -487,7 +487,7 @@ export const products: Product[] = [
     description: 'Experiență completă de spa într-un format modern.',
     longDescription:
       'PMPFiber Square Spa Luxury 200x200 este experiența completă de spa într-un format modern, pătrat: aeromasaj, hidromasaj, tetiere, suport pahare și termometru.',
-    images: [IMG('ciubar12.png')],
+    images: [IMG('ciubar12.webp')],
     features: [
       'Dimensiune ciubăr: 200 × 200 cm',
       'Aeromasaj cu 12 duze',
@@ -518,7 +518,7 @@ export const products: Product[] = [
     description: 'Sisteme modulare pentru montaj în terasă sau podea.',
     longDescription:
       'Sistemele încastrabile PMPFiber sunt soluții modulare gândite pentru integrarea ciubărului direct în terasă, deck sau foișor. Alegi componentele de care ai nevoie și construiești configurația potrivită pentru spațiul tău.',
-    images: [IMG('ciubar13.png')],
+    images: [IMG('ciubar13.webp')],
     features: [
       'Sisteme modulare pentru montaj în terasă sau podea',
       'Disponibil pentru model rotund 200 cm',
@@ -558,7 +558,7 @@ export const products: Product[] = [
     description: 'Terapie cu apă rece pentru recuperare și revitalizare.',
     longDescription:
       'PMPFiber IceTube este soluția compactă pentru terapia cu apă rece (cold plunge). Finisajul premium din lemn și capacul termoizolant inclus o transformă într-un accesoriu de recuperare elegant pentru curte, terasă sau zonă wellness.',
-    images: [IMG('ciubar14.png')],
+    images: [IMG('ciubar14.webp')],
     features: [
       'Design compact și elegant',
       'Finisaj exterior premium din lemn',
@@ -591,7 +591,7 @@ export const products: Product[] = [
       'Cuve premium pentru ciubăre, mini piscine și proiecte SPA încastrabile.',
     longDescription:
       'Cuvele din fibră de sticlă PMPFiber sunt baza solidă pentru ciubăre, mini piscine și proiecte SPA încastrabile. Sunt rezistente, ușor de întreținut și disponibile în mai multe dimensiuni rotunde și pătrate, cu sau fără sobă integrată.',
-    images: [IMG('ciubar15.png')],
+    images: [IMG('ciubar15.webp')],
     features: [
       'Material premium din fibră de sticlă',
       'Rezistente și ușor de întreținut',

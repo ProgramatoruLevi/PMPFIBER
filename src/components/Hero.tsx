@@ -62,7 +62,7 @@ export default function Hero() {
             className="relative mt-6 overflow-hidden rounded-3xl border border-white/10 shadow-premium"
           >
             <img
-              src="/images/imagine_background_hero.png"
+              src="/images/imagine_background_hero.webp"
               alt="Ciubăr premium PMPFiber pe malul unui lac de munte, la apus"
               className="aspect-[4/3] w-full object-cover"
               style={{ objectPosition: 'center' }}
@@ -116,7 +116,7 @@ export default function Hero() {
       <section className="relative isolate hidden min-h-[92svh] items-center overflow-hidden md:flex">
         <picture className="absolute inset-0 -z-10">
           <img
-            src="/images/imagine_background_hero.png"
+            src="/images/imagine_background_hero.webp"
             alt="Ciubăr premium PMPFiber pe malul unui lac de munte, la apus"
             className="h-full w-full object-cover"
           />

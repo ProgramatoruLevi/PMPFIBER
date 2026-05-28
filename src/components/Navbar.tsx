@@ -34,7 +34,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link to="/" className="flex shrink-0 items-center" aria-label="PMPFIBER — Acasă">
             <img
-              src="/images/logo_PMP_FIBER.png"
+              src="/images/logo_PMP_FIBER.webp"
               alt="PMPFIBER — ciubăre premium"
               className="h-9 w-auto sm:h-10"
               width={170}

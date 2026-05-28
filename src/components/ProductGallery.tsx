@@ -15,7 +15,7 @@ interface Props {
 export default function ProductGallery({ images, alt }: Props) {
   const [active, setActive] = useState(0);
   const [zoomOpen, setZoomOpen] = useState(false);
-  const safeImages = images.length ? images : ['/images/ciubar1.png'];
+  const safeImages = images.length ? images : ['/images/ciubar1.webp'];
   const idx = Math.min(active, safeImages.length - 1);
   const current = safeImages[idx];
 

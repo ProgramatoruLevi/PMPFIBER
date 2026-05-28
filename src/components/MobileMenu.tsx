@@ -34,7 +34,7 @@ export default function MobileMenu({ open, onClose }: Props) {
           {/* Header */}
           <div className="container-px flex h-20 items-center justify-between">
             <img
-              src="/images/logo_PMP_FIBER.png"
+              src="/images/logo_PMP_FIBER.webp"
               alt="PMPFIBER"
               className="h-9 w-auto"
             />
