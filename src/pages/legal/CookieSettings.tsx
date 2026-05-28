@@ -77,7 +77,7 @@ function Toggle({ label, description, checked, disabled, onChange }: ToggleProps
       <div className="flex-1">
         <h3 className="flex items-center gap-2 font-semibold text-cream">
           {label}
-          {disabled && <Lock className="h-3.5 w-3.5 text-sand/60" />}
+          {disabled && <Lock className="h-3.5 w-3.5 text-sand/80" />}
         </h3>
         <p className="mt-1 text-sm text-sand">{description}</p>
       </div>

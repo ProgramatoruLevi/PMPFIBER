@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 
 interface Props {
   images: string[];
@@ -39,22 +40,19 @@ export default function Lightbox({ images, index, alt, open, onClose, onIndexCha
     [index, images.length, onIndexChange, reset],
   );
 
-  // Blocare scroll body + scurtături tastatură
+  // Focus trap + Escape + blocare scroll + restaurare focus (a11y).
+  const dialogRef = useFocusTrap<HTMLDivElement>(open, onClose);
+
+  // Navigare cu săgeți (Escape/scroll-lock sunt gestionate de useFocusTrap).
   useEffect(() => {
     if (!open) return;
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-      else if (e.key === 'ArrowRight') go(1);
+      if (e.key === 'ArrowRight') go(1);
       else if (e.key === 'ArrowLeft') go(-1);
     };
     window.addEventListener('keydown', onKey);
-    return () => {
-      document.body.style.overflow = prevOverflow;
-      window.removeEventListener('keydown', onKey);
-    };
-  }, [open, onClose, go]);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open, go]);
 
   // Resetează zoom-ul când se schimbă imaginea sau se deschide
   useEffect(() => {
@@ -120,6 +118,7 @@ export default function Lightbox({ images, index, alt, open, onClose, onIndexCha
     <AnimatePresence>
       {open && (
         <motion.div
+          ref={dialogRef}
           className="fixed inset-0 z-[80] flex flex-col bg-ink-950/95 backdrop-blur-md"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -139,7 +138,7 @@ export default function Lightbox({ images, index, alt, open, onClose, onIndexCha
                 type="button"
                 onClick={() => zoomBy(-0.5)}
                 disabled={scale <= MIN}
-                className="grid h-10 w-10 place-items-center rounded-full border border-white/15 bg-white/5 text-cream transition hover:border-gold/50 disabled:opacity-40"
+                className="grid h-11 w-11 place-items-center rounded-full border border-white/15 bg-white/5 text-cream transition hover:border-gold/50 disabled:opacity-40"
                 aria-label="Micșorează"
               >
                 <ZoomOut className="h-5 w-5" />
@@ -148,7 +147,7 @@ export default function Lightbox({ images, index, alt, open, onClose, onIndexCha
                 type="button"
                 onClick={() => zoomBy(0.5)}
                 disabled={scale >= MAX}
-                className="grid h-10 w-10 place-items-center rounded-full border border-white/15 bg-white/5 text-cream transition hover:border-gold/50 disabled:opacity-40"
+                className="grid h-11 w-11 place-items-center rounded-full border border-white/15 bg-white/5 text-cream transition hover:border-gold/50 disabled:opacity-40"
                 aria-label="Mărește"
               >
                 <ZoomIn className="h-5 w-5" />
@@ -157,7 +156,7 @@ export default function Lightbox({ images, index, alt, open, onClose, onIndexCha
                 type="button"
                 onClick={reset}
                 disabled={scale === 1 && pos.x === 0 && pos.y === 0}
-                className="grid h-10 w-10 place-items-center rounded-full border border-white/15 bg-white/5 text-cream transition hover:border-gold/50 disabled:opacity-40"
+                className="grid h-11 w-11 place-items-center rounded-full border border-white/15 bg-white/5 text-cream transition hover:border-gold/50 disabled:opacity-40"
                 aria-label="Resetează zoom"
               >
                 <RotateCcw className="h-5 w-5" />
@@ -165,7 +164,7 @@ export default function Lightbox({ images, index, alt, open, onClose, onIndexCha
               <button
                 type="button"
                 onClick={onClose}
-                className="ml-1 grid h-10 w-10 place-items-center rounded-full border border-white/15 bg-white/5 text-cream transition hover:border-gold/50"
+                className="ml-1 grid h-11 w-11 place-items-center rounded-full border border-white/15 bg-white/5 text-cream transition hover:border-gold/50"
                 aria-label="Închide galeria"
               >
                 <X className="h-5 w-5" />
@@ -263,7 +262,7 @@ export default function Lightbox({ images, index, alt, open, onClose, onIndexCha
           )}
 
           {/* Hint */}
-          <p className="pb-3 text-center text-[11px] text-sand/50">
+          <p className="pb-3 text-center text-[11px] text-sand/70">
             Scroll, dublu-click sau pinch pentru zoom · trage pentru a muta imaginea
           </p>
         </motion.div>

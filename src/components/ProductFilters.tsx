@@ -41,7 +41,7 @@ const Chip = ({
       </span>
       <span
         className={`text-[11px] font-semibold tabular-nums ${
-          active ? 'text-ink-950/70' : 'text-sand/50'
+          active ? 'text-ink-950/70' : 'text-sand/70'
         }`}
       >
         {countFor(id)}
@@ -188,7 +188,7 @@ export default function ProductFilters({ active, onSelect, resultCount }: Props)
                   }`}
                 >
                   <span>Toate modelele</span>
-                  <span className={isAll ? 'text-ink-950/70' : 'text-sand/50'}>{countFor('toate')}</span>
+                  <span className={isAll ? 'text-ink-950/70' : 'text-sand/70'}>{countFor('toate')}</span>
                 </button>
 
                 <Groups block />

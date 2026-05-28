@@ -123,7 +123,7 @@ export default function Terms() {
             </ul>
           </S>
 
-          <p className="text-xs text-sand/60">Ultima actualizare: 28 mai 2026</p>
+          <p className="text-xs text-sand/80">Ultima actualizare: 28 mai 2026</p>
         </div>
       </section>
     </>

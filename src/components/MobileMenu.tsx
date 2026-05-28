@@ -2,6 +2,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Phone, X, MessageCircle, ArrowUpRight } from 'lucide-react';
 import { company, navLinks, telLink, whatsappLink } from '../data/company';
+import { useFocusTrap } from '../hooks/useFocusTrap';
+import { trackCallClick, trackWhatsAppClick } from '../utils/analytics';
 
 interface Props {
   open: boolean;
@@ -21,10 +23,15 @@ const item = {
 };
 
 export default function MobileMenu({ open, onClose }: Props) {
+  const ref = useFocusTrap<HTMLDivElement>(open, onClose);
   return (
     <AnimatePresence>
       {open && (
         <motion.div
+          ref={ref}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Meniu de navigare"
           className="fixed inset-0 z-[60] flex flex-col bg-ink-950/97 backdrop-blur-2xl lg:hidden"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -77,7 +84,11 @@ export default function MobileMenu({ open, onClose }: Props) {
             animate="show"
             transition={{ delay: 0.35 }}
           >
-            <a href={telLink} className="btn-call w-full text-base py-4">
+            <a
+              href={telLink}
+              onClick={() => trackCallClick('mobile-menu')}
+              className="btn-call w-full text-base py-4"
+            >
               <Phone className="h-5 w-5" />
               Sună acum · {company.phoneDisplay}
             </a>
@@ -86,6 +97,7 @@ export default function MobileMenu({ open, onClose }: Props) {
                 href={whatsappLink('Bună ziua! Sunt interesat(ă) de un ciubăr PMPFiber.')}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackWhatsAppClick('mobile-menu')}
                 className="btn-whatsapp w-full"
               >
                 <MessageCircle className="h-5 w-5" />

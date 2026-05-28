@@ -1,167 +1,134 @@
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Phone, Flame, Snowflake, Users, Truck, ArrowRight } from 'lucide-react';
+import { Phone, ArrowRight, Factory, BadgeCheck, ShieldCheck } from 'lucide-react';
 import { company, telLink } from '../data/company';
+import { products, getFromPrice, formatLei } from '../data/products';
+import { trackCallClick } from '../utils/analytics';
 
-const badges = [
-  { icon: Flame, label: 'Sobă inox inclusă' },
-  { icon: Snowflake, label: 'Izolație spumă poliuretanică' },
-  { icon: Users, label: 'Modele 4–10 persoane' },
-  { icon: Truck, label: 'Livrare în România' },
+// Cel mai accesibil ciubăr COMPLET (are tier) — ancora de preț din hero.
+const fromPrice = Math.min(...products.filter((p) => p.tier).map(getFromPrice));
+
+const trust = [
+  { icon: Factory, label: 'Direct de la producător' },
+  { icon: BadgeCheck, label: 'TVA inclus' },
+  { icon: ShieldCheck, label: 'Garanție 2 ani' },
 ];
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  show: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.8, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] as const },
-  }),
-};
+/** Bloc-ancoră de preț, reutilizat pe mobil și desktop. */
+function PriceAnchor({ className = '' }: { className?: string }) {
+  return (
+    <div className={className}>
+      <p className="flex items-baseline gap-2">
+        <span className="text-sm font-medium uppercase tracking-widest text-sand/80">
+          Ciubăr complet de la
+        </span>
+      </p>
+      <p className="mt-0.5 font-display text-4xl font-bold leading-none text-gold-gradient sm:text-5xl">
+        {formatLei(fromPrice)}
+      </p>
+      <ul className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[13px] font-semibold text-cream/90">
+        {trust.map((t) => (
+          <li key={t.label} className="inline-flex items-center gap-1.5">
+            <t.icon className="h-4 w-4 text-gold-light" />
+            {t.label}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 export default function Hero() {
   return (
     <>
-      {/* ════════════ MOBIL ════════════
-          Text pe fundal curat închis (lizibil) + ciubărul într-o imagine
-          dedicată, vizibilă complet. Mai puține butoane (mai puțin insistent). */}
-      <section className="relative bg-ink-950 pb-12 pt-28 md:hidden">
-        <div className="container-px">
-          <motion.span custom={0} variants={fadeUp} initial="hidden" animate="show" className="eyebrow">
+      {/* ════════════ MOBIL — hero full-bleed, imersiv ════════════ */}
+      <section className="relative isolate flex min-h-[92svh] flex-col justify-end overflow-hidden md:hidden">
+        <img
+          src="/images/imagine_background_hero_mobil-w1080.webp"
+          srcSet="/images/imagine_background_hero_mobil-w768.webp 768w, /images/imagine_background_hero_mobil-w1080.webp 1080w"
+          sizes="100vw"
+          alt="Ciubăr premium PMPFiber pe malul unui lac de munte, la apus"
+          width={1800}
+          height={3199}
+          fetchPriority="high"
+          decoding="async"
+          className="absolute inset-0 -z-10 h-full w-full object-cover"
+        />
+        {/* Gradient sus (lizibilitate navbar) + jos (lizibilitate text) */}
+        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-ink-950/70 via-transparent to-transparent" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink-950 via-ink-950/75 to-transparent" />
+
+        <div className="container-px animate-fade-up pb-12 pt-28">
+          <span className="eyebrow">
             <span className="h-px w-8 bg-gold/60" />
             Producător român de ciubăre premium
-          </motion.span>
-
-          <motion.h1
-            custom={1}
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            className="mt-4 font-display text-[2.1rem] font-bold leading-[1.08] text-cream"
-          >
+          </span>
+          <h1 className="mt-3 font-display text-[2.15rem] font-bold leading-[1.07] text-cream">
             Ciubăre premium pentru <span className="text-gold-gradient">relaxare autentică</span>
-          </motion.h1>
+          </h1>
+          <p className="mt-3 max-w-md text-base leading-relaxed text-cream/85">
+            Fibră de sticlă rezistentă, finisaj din lemn premium și sobă inox inclusă —
+            confort în orice sezon.
+          </p>
 
-          <motion.p
-            custom={2}
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            className="mt-3 text-[0.95rem] leading-relaxed text-sand"
-          >
-            Construite din fibră de sticlă rezistentă, finisate cu lemn premium și echipate
-            pentru confort în orice sezon.
-          </motion.p>
+          <PriceAnchor className="mt-6" />
 
-          {/* Ciubărul — imagine dedicată, complet vizibilă */}
-          <motion.div
-            custom={3}
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            className="relative mt-6 overflow-hidden rounded-3xl border border-white/10 shadow-premium"
-          >
-            <img
-              src="/images/imagine_background_hero.webp"
-              alt="Ciubăr premium PMPFiber pe malul unui lac de munte, la apus"
-              className="aspect-[4/3] w-full object-cover"
-              style={{ objectPosition: 'center' }}
-            />
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink-950/40 via-transparent to-transparent" />
-            <ul className="absolute inset-x-0 bottom-0 flex flex-wrap gap-2 p-4">
-              {badges.slice(0, 2).map((b) => (
-                <li
-                  key={b.label}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-ink-950/55 px-3 py-1 text-[11px] font-medium text-cream backdrop-blur-md"
-                >
-                  <b.icon className="h-3.5 w-3.5 text-gold-light" />
-                  {b.label}
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-
-          {/* Doar 2 acțiuni — primar Vezi modelele, apel discret dedesubt */}
-          <motion.div
-            custom={4}
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            className="mt-6 space-y-3"
-          >
+          <div className="mt-7 space-y-3">
             <Link to="/ciubare" className="btn-gold w-full py-4 text-base">
               Vezi modelele
               <ArrowRight className="h-4 w-4" />
             </Link>
-            <a href={telLink} className="btn-outline w-full">
-              <Phone className="h-4 w-4 text-[#37d07f]" />
+            <a
+              href={telLink}
+              onClick={() => trackCallClick('hero-mobile')}
+              className="btn-call w-full py-4 text-base"
+            >
+              <Phone className="h-5 w-5" />
               Sună acum · {company.phoneDisplay}
             </a>
-          </motion.div>
-
-          {/* Restul de avantaje, discret */}
-          <ul className="mt-5 flex flex-wrap gap-2">
-            {badges.slice(2).map((b) => (
-              <li key={b.label} className="pill">
-                <b.icon className="h-3.5 w-3.5" />
-                {b.label}
-              </li>
-            ))}
-          </ul>
+          </div>
         </div>
       </section>
 
-      {/* ════════════ DESKTOP / TABLETĂ ════════════
-          Hero full-bleed cu fundal vizibil (neschimbat). */}
+      {/* ════════════ DESKTOP / TABLETĂ — full-bleed ════════════ */}
       <section className="relative isolate hidden min-h-[92svh] items-center overflow-hidden md:flex">
-        <picture className="absolute inset-0 -z-10">
-          <img
-            src="/images/imagine_background_hero.webp"
-            alt="Ciubăr premium PMPFiber pe malul unui lac de munte, la apus"
-            className="h-full w-full object-cover"
-          />
-        </picture>
-
-        {/* Overlay — fundal vizibil, text lizibil pe stânga */}
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink-950/72 via-ink-950/40 to-transparent" />
+        <img
+          src="/images/imagine_background_hero.webp"
+          srcSet="/images/imagine_background_hero-w1280.webp 1280w, /images/imagine_background_hero.webp 1800w"
+          sizes="100vw"
+          alt="Ciubăr premium PMPFiber pe malul unui lac de munte, la apus"
+          width={1800}
+          height={1014}
+          fetchPriority="high"
+          decoding="async"
+          className="absolute inset-0 -z-10 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink-950/80 via-ink-950/45 to-transparent" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink-950/85 via-transparent to-ink-950/25" />
 
         <div className="container-px w-full pb-16 pt-32 sm:pt-36">
-          <div className="max-w-2xl">
-            <motion.span custom={0} variants={fadeUp} initial="hidden" animate="show" className="eyebrow">
+          <div className="max-w-2xl animate-fade-up">
+            <span className="eyebrow">
               <span className="h-px w-8 bg-gold/60" />
               Producător român de ciubăre premium
-            </motion.span>
+            </span>
 
-            <motion.h1
-              custom={1}
-              variants={fadeUp}
-              initial="hidden"
-              animate="show"
-              className="mt-5 font-display text-5xl font-bold leading-[1.05] text-cream lg:text-6xl xl:text-7xl"
-            >
+            <h1 className="mt-5 font-display text-5xl font-bold leading-[1.05] text-cream lg:text-6xl xl:text-7xl">
               Ciubăre premium pentru <span className="text-gold-gradient">relaxare autentică</span>
-            </motion.h1>
+            </h1>
 
-            <motion.p
-              custom={2}
-              variants={fadeUp}
-              initial="hidden"
-              animate="show"
-              className="mt-6 max-w-xl text-lg leading-relaxed text-cream/85"
-            >
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-cream/85">
               Construite din fibră de sticlă rezistentă, finisate cu lemn premium și echipate
               pentru confort în orice sezon.
-            </motion.p>
+            </p>
 
-            <motion.div
-              custom={3}
-              variants={fadeUp}
-              initial="hidden"
-              animate="show"
-              className="mt-9 flex flex-wrap items-center gap-3"
-            >
-              <a href={telLink} className="btn-call px-7 py-4 text-base">
+            <PriceAnchor className="mt-7" />
+
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <a
+                href={telLink}
+                onClick={() => trackCallClick('hero-desktop')}
+                className="btn-call px-7 py-4 text-base"
+              >
                 <Phone className="h-5 w-5" />
                 <span className="flex flex-col items-start leading-none">
                   <span className="text-[10px] font-normal uppercase tracking-widest opacity-80">
@@ -177,33 +144,7 @@ export default function Hero() {
               <Link to="/contact" className="btn-outline">
                 Cere ofertă
               </Link>
-            </motion.div>
-
-            <motion.ul
-              custom={4}
-              variants={fadeUp}
-              initial="hidden"
-              animate="show"
-              className="mt-10 flex flex-wrap gap-2.5"
-            >
-              {badges.map((b) => (
-                <li key={b.label} className="pill">
-                  <b.icon className="h-3.5 w-3.5" />
-                  {b.label}
-                </li>
-              ))}
-            </motion.ul>
-          </div>
-        </div>
-
-        {/* Scroll hint */}
-        <div className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 lg:block">
-          <div className="flex h-10 w-6 items-start justify-center rounded-full border border-cream/25 p-1.5">
-            <motion.span
-              className="h-2 w-1 rounded-full bg-gold-light"
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
-            />
+            </div>
           </div>
         </div>
       </section>

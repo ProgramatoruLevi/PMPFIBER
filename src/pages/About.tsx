@@ -2,6 +2,7 @@ import { Building2, ShieldCheck, Hammer, Leaf, MapPin } from 'lucide-react';
 import SEO from '../components/SEO';
 import PageHeader from '../components/PageHeader';
 import Reveal from '../components/Reveal';
+import ResponsiveImg from '../components/ResponsiveImg';
 import SectionHeading from '../components/SectionHeading';
 import CTASection from '../components/CTASection';
 import { company } from '../data/company';
@@ -76,10 +77,14 @@ export default function About() {
         <div className="container-px grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <Reveal>
             <div className="overflow-hidden rounded-3xl border border-white/10">
-              <img
+              <ResponsiveImg
                 src="/images/ciubar1.webp"
+                sizes="(min-width:1024px) 45vw, 92vw"
                 alt="Ciubăr PMPFiber din lemn premium"
+                width={900}
+                height={675}
                 loading="lazy"
+                decoding="async"
                 className="aspect-[4/3] w-full object-cover"
               />
             </div>

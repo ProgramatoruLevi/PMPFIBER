@@ -19,6 +19,7 @@ import {
   offerLink,
   type Product,
 } from '../data/products';
+import ResponsiveImg from './ResponsiveImg';
 import { company, telLink, whatsappLink } from '../data/company';
 
 type Capacity = '4-6' | '8-10';
@@ -224,12 +225,16 @@ export default function Configurator() {
         <div className="overflow-hidden rounded-3xl border border-gold/25 bg-gradient-to-b from-ink-700/80 to-ink-900">
           {recommended && (
             <Link to={productPath(recommended)} className="block">
-              <div className="relative aspect-[16/10] overflow-hidden">
-                <img
+              <div className="product-media relative aspect-[16/10] overflow-hidden">
+                <ResponsiveImg
                   src={recommended.images[0]}
+                  sizes="(min-width:1024px) 32vw, 92vw"
                   alt={recommended.name}
+                  width={640}
+                  height={400}
                   className="h-full w-full object-contain p-3"
                   loading="lazy"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink-900 via-ink-900/20 to-transparent" />
                 <span className="absolute left-4 top-4 pill">Recomandarea noastră</span>
@@ -238,7 +243,7 @@ export default function Configurator() {
           )}
 
           <div className="p-6">
-            <p className="text-xs uppercase tracking-widest text-sand/60">Model recomandat</p>
+            <p className="text-xs uppercase tracking-widest text-sand/80">Model recomandat</p>
             <AnimatePresence mode="wait">
               <motion.h3
                 key={recommended?.slug}
@@ -253,7 +258,7 @@ export default function Configurator() {
             <p className="mt-1 text-sm text-sand">{lidLabel}</p>
 
             <div className="mt-5 rounded-2xl border border-white/10 bg-ink-950/50 p-4">
-              <span className="text-xs uppercase tracking-widest text-sand/60">
+              <span className="text-xs uppercase tracking-widest text-sand/80">
                 Preț estimativ
               </span>
               <AnimatePresence mode="wait">
@@ -267,7 +272,7 @@ export default function Configurator() {
                   {formatLei(estimate)}
                 </motion.p>
               </AnimatePresence>
-              <p className="mt-1 text-xs text-sand/60">
+              <p className="mt-1 text-xs text-sand/80">
                 Estimare orientativă, TVA inclus. Prețul final îl confirmăm la cerere.
               </p>
               <p className="mt-1.5 text-sm font-bold">
@@ -298,7 +303,7 @@ export default function Configurator() {
                   WhatsApp
                 </a>
               </div>
-              <p className="text-center text-xs text-sand/60">{company.phoneDisplay}</p>
+              <p className="text-center text-xs text-sand/80">{company.phoneDisplay}</p>
             </div>
           </div>
         </div>

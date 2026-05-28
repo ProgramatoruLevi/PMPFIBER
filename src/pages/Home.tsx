@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import SEO from '../components/SEO';
 import Hero from '../components/Hero';
+import AssuranceStrip from '../components/AssuranceStrip';
 import FeatureSection from '../components/FeatureSection';
 import ProductGrid from '../components/ProductGrid';
 import SectionHeading from '../components/SectionHeading';
@@ -17,7 +18,7 @@ import Reveal from '../components/Reveal';
 import Configurator from '../components/Configurator';
 import FAQ from '../components/FAQ';
 import CTASection from '../components/CTASection';
-import { popularProducts } from '../data/products';
+import { popularProducts, products, getFromPrice, formatLei, type ProductTier } from '../data/products';
 import { faqs } from '../data/faq';
 import {
   organizationLd,
@@ -29,9 +30,13 @@ import {
 const meta: SeoMeta = {
   title: 'Ciubăre premium din fibră de sticlă și lemn',
   description:
-    'PMPFIBER SRL — producător român de ciubăre premium din fibră de sticlă și lemn. Modele 4–10 persoane, sobă inox inclusă, izolație cu spumă poliuretanică, livrare în România.',
+    'Ciubăre premium din fibră de sticlă și lemn, direct de la producător — de la 9.000 lei, TVA inclus, garanție 2 ani. Modele 4–10 persoane, sobă inox. Livrare în România.',
   path: '/',
 };
+
+/** Cel mai mic preț dintr-o gamă (Base/Comfort/Luxury) — pentru „de la X lei". */
+const tierFrom = (tier: ProductTier): number =>
+  Math.min(...products.filter((p) => p.tier === tier).map(getFromPrice));
 
 const tiers = [
   {
@@ -66,6 +71,7 @@ export default function Home() {
       <SEO {...meta} jsonLd={[organizationLd(), websiteLd(), faqLd(faqs)]} />
 
       <Hero />
+      <AssuranceStrip />
       <FeatureSection />
 
       {/* Modele populare */}
@@ -114,7 +120,20 @@ export default function Home() {
                   )}
                   <h3 className="font-display text-2xl font-semibold text-cream">{t.name}</h3>
                   <p className="mt-1 text-sm text-gold-light">{t.tagline}</p>
-                  <ul className="mt-6 flex-1 space-y-3">
+                  <p className="mt-4 flex items-baseline gap-1.5">
+                    <span className="text-xs font-medium uppercase tracking-widest text-sand/80">
+                      de la
+                    </span>
+                    <span className="font-display text-3xl font-bold text-gold-light">
+                      {formatLei(tierFrom(t.name as ProductTier))}
+                    </span>
+                  </p>
+                  <p className="mt-1 text-[11px] font-semibold">
+                    <span className="text-[#ff6b5b]">TVA inclus</span>
+                    <span className="text-sand/40"> · </span>
+                    <span className="text-[#4ade80]">garanție 2 ani</span>
+                  </p>
+                  <ul className="mt-5 flex-1 space-y-3">
                     {t.points.map((p) => (
                       <li key={p} className="flex items-start gap-3 text-sm text-sand">
                         <Check className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
@@ -142,9 +161,12 @@ export default function Home() {
             <Reveal>
               <div className="relative overflow-hidden rounded-3xl border border-white/10">
                 <img
-                  src="/images/imagine_background_hero.webp"
+                  src="/images/imagine_background_hero-w1280.webp"
                   alt="Ciubăr PMPFiber într-un peisaj montan, la apus de soare"
                   loading="lazy"
+                  decoding="async"
+                  width={1280}
+                  height={722}
                   className="aspect-[4/3] w-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink-950/50 to-transparent" />

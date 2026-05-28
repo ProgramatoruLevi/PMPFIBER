@@ -6,6 +6,14 @@ import { ClientOnly } from 'vite-react-ssg';
 import { getCookiePreferences, saveCookiePreferences } from '../utils/cookies';
 import { enableAnalytics, disableAnalytics } from '../utils/analytics';
 
+function useFocusOnShow(visible: boolean) {
+  const ref = useRef<HTMLButtonElement | null>(null);
+  useEffect(() => {
+    if (visible) ref.current?.focus({ preventScroll: true });
+  }, [visible]);
+  return ref;
+}
+
 const SETTINGS_PATH = '/setari-cookie';
 const DELAY_MS = 1300;
 
@@ -53,70 +61,69 @@ function CookieBannerInner() {
     navigate(SETTINGS_PATH);
   };
 
+  const acceptRef = useFocusOnShow(visible);
+
   return (
     <AnimatePresence>
       {visible && (
         <motion.div
-          className="fixed inset-0 z-[90] flex items-center justify-center bg-black/55 px-4 backdrop-blur-md"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="cookie-banner-title"
+          className="fixed inset-x-0 bottom-0 z-[90] px-3 pb-3 pt-2 sm:px-6 sm:pb-6"
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 28 }}
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          role="region"
+          aria-label="Consimțământ cookie"
+          style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}
         >
-          <motion.div
-            initial={{ opacity: 0, y: 24, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 24, scale: 0.98 }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="w-full max-w-lg rounded-3xl border border-white/10 bg-ink-900 p-6 shadow-premium sm:p-8"
-          >
-            <div className="flex items-center gap-3">
-              <span className="grid h-12 w-12 place-items-center rounded-2xl border border-gold/30 bg-gold/10 text-gold-light">
-                <ShieldCheck className="h-6 w-6" />
-              </span>
-              <div>
-                <h2 id="cookie-banner-title" className="font-display text-xl text-cream sm:text-2xl">
-                  Respectăm confidențialitatea ta
-                </h2>
-                <p className="text-xs text-sand/70">Conform GDPR</p>
+          <div className="mx-auto max-w-3xl rounded-2xl border border-white/10 bg-ink-900/95 p-5 shadow-premium backdrop-blur-xl sm:p-6">
+            <div className="flex flex-col gap-5 lg:flex-row lg:items-center">
+              <div className="flex-1">
+                <div className="flex items-center gap-3">
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-gold/30 bg-gold/10 text-gold-light">
+                    <ShieldCheck className="h-5 w-5" />
+                  </span>
+                  <h2 id="cookie-banner-title" className="font-display text-lg text-cream sm:text-xl">
+                    Respectăm confidențialitatea ta
+                  </h2>
+                </div>
+                <p className="mt-3 text-sm leading-relaxed text-sand">
+                  Folosim cookie-uri necesare și, opțional, cookie-uri analitice (Google Analytics)
+                  pentru a îmbunătăți site-ul. Nimic nu se încarcă fără acordul tău. Detalii în{' '}
+                  <Link to="/confidentialitate" className="text-gold-light underline underline-offset-2 hover:text-gold">
+                    Politica de confidențialitate
+                  </Link>
+                  .
+                </p>
+              </div>
+
+              <div className="flex shrink-0 flex-col gap-2.5 sm:flex-row lg:w-auto lg:flex-col xl:flex-row">
+                <button
+                  ref={acceptRef}
+                  type="button"
+                  onClick={acceptAll}
+                  className="btn-gold w-full px-6 py-3 sm:w-auto"
+                >
+                  Acceptă toate
+                </button>
+                <button
+                  type="button"
+                  onClick={rejectAll}
+                  className="btn-outline w-full px-6 py-3 sm:w-auto"
+                >
+                  Doar necesare
+                </button>
+                <button
+                  type="button"
+                  onClick={goToSettings}
+                  className="inline-flex w-full items-center justify-center gap-1.5 rounded-full px-4 py-3 text-sm font-semibold text-cream/80 transition-colors hover:text-cream sm:w-auto"
+                >
+                  <Settings2 className="h-4 w-4" />
+                  Setări
+                </button>
               </div>
             </div>
-
-            <p className="mt-5 text-sm leading-relaxed text-sand">
-              Folosim cookie-uri necesare pentru funcționarea site-ului și, opțional, cookie-uri
-              analitice (Google Analytics) pentru a înțelege cum este folosit site-ul și a-l
-              îmbunătăți. Nimic nu se încarcă fără acordul tău. Detalii în{' '}
-              <Link to="/confidentialitate" className="text-gold-light underline underline-offset-2 hover:text-gold">
-                Politica de confidențialitate
-              </Link>
-              .
-            </p>
-
-            <button
-              type="button"
-              onClick={acceptAll}
-              className="btn-gold mt-6 w-full py-3.5 text-base"
-            >
-              Acceptă toate cookie-urile
-            </button>
-
-            <div className="mt-3 grid grid-cols-2 gap-3">
-              <button type="button" onClick={rejectAll} className="btn-outline w-full !py-2.5 text-sm">
-                Doar necesare
-              </button>
-              <button
-                type="button"
-                onClick={goToSettings}
-                className="inline-flex w-full items-center justify-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-cream transition-colors hover:border-gold/40"
-              >
-                <Settings2 className="h-4 w-4" />
-                Setări cookie
-              </button>
-            </div>
-          </motion.div>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

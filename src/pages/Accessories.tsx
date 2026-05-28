@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import PageHeader from '../components/PageHeader';
 import Reveal from '../components/Reveal';
+import ResponsiveImg from '../components/ResponsiveImg';
 import CTASection from '../components/CTASection';
 import { ArrowRight } from 'lucide-react';
 import { accessories, accessoryPath } from '../data/accessories';
@@ -39,12 +40,15 @@ export default function Accessories() {
                 <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-ink-800/60 shadow-card transition-all hover:-translate-y-1.5 hover:border-gold/40">
                   <Link
                     to={accessoryPath(a)}
-                    className="block aspect-square overflow-hidden bg-ink-900"
+                    className="product-media block aspect-square overflow-hidden"
                     aria-label={`Vezi detalii ${a.name}`}
                   >
-                    <img
+                    <ResponsiveImg
                       src={a.images[0]}
-                      alt={`${a.name} — accesoriu PMPFiber`}
+                      sizes="(min-width:1024px) 23vw, (min-width:640px) 45vw, 92vw"
+                      alt={`${a.name} — accesoriu ciubăr PMPFiber`}
+                      width={480}
+                      height={480}
                       loading="lazy"
                       decoding="async"
                       className="h-full w-full object-contain p-3 transition-transform duration-700 group-hover:scale-105"

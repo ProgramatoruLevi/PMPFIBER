@@ -10,7 +10,9 @@ export interface Crumb {
 
 interface Props {
   eyebrow?: string;
-  title: ReactNode;
+  /** Opțional: dacă lipsește, antetul e compact (doar breadcrumb + eyebrow),
+   *  iar titlul H1 al paginii e furnizat de conținut (ex. pagina de produs). */
+  title?: ReactNode;
   subtitle?: ReactNode;
   crumbs?: Crumb[];
   children?: ReactNode;
@@ -18,8 +20,13 @@ interface Props {
 
 /** Antet de pagină cu spațiu pentru navbar-ul fix + breadcrumb. */
 export default function PageHeader({ eyebrow, title, subtitle, crumbs, children }: Props) {
+  const compact = !title;
   return (
-    <section className="relative overflow-hidden border-b border-white/10 bg-ink-900 pb-14 pt-32 sm:pt-36">
+    <section
+      className={`relative overflow-hidden border-b border-white/10 bg-ink-900 ${
+        compact ? 'pb-7 pt-28 sm:pt-28' : 'pb-14 pt-32 sm:pt-36'
+      }`}
+    >
       <div className="pointer-events-none absolute -right-24 -top-10 h-72 w-72 rounded-full bg-gold/10 blur-3xl" />
       <div className="bg-noise pointer-events-none absolute inset-0 opacity-40" />
       <div className="container-px relative">
@@ -52,9 +59,11 @@ export default function PageHeader({ eyebrow, title, subtitle, crumbs, children 
               {eyebrow}
             </span>
           )}
-          <h1 className="mt-4 font-display text-4xl font-bold leading-tight text-cream sm:text-5xl lg:text-[3.4rem]">
-            {title}
-          </h1>
+          {title && (
+            <h1 className="mt-4 font-display text-4xl font-bold leading-tight text-cream sm:text-5xl lg:text-[3.4rem]">
+              {title}
+            </h1>
+          )}
           {subtitle && (
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-sand sm:text-lg">
               {subtitle}

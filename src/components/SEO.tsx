@@ -1,6 +1,12 @@
 import { Head } from 'vite-react-ssg';
 import { company } from '../data/company';
-import { absUrl, DEFAULT_OG_IMAGE, type SeoMeta } from '../utils/seo';
+import {
+  absUrl,
+  DEFAULT_OG_IMAGE,
+  DEFAULT_OG_WIDTH,
+  DEFAULT_OG_HEIGHT,
+  type SeoMeta,
+} from '../utils/seo';
 
 interface SEOProps extends SeoMeta {
   /** Obiecte JSON-LD (Organization, Product, Breadcrumb, FAQ...) */
@@ -15,6 +21,9 @@ interface SEOProps extends SeoMeta {
   priceAmount?: number;
   /** Cod monedă pentru og:type=product (default RON). */
   priceCurrency?: string;
+  /** Dimensiuni reale ale og:image (px). Emise doar când sunt cunoscute. */
+  imageWidth?: number;
+  imageHeight?: number;
 }
 
 /**
@@ -35,11 +44,17 @@ export default function SEO({
   articleSection,
   priceAmount,
   priceCurrency = 'RON',
+  imageWidth,
+  imageHeight,
 }: SEOProps) {
   const fullTitle =
     title === company.brand ? title : `${title} · ${company.brand}`;
   const canonical = absUrl(path);
   const ogImage = image ? absUrl(image) : DEFAULT_OG_IMAGE;
+  // Dimensiunile sunt cunoscute doar pentru imaginea OG implicită (1200×630)
+  // sau când sunt furnizate explicit — altfel nu le declarăm (evităm valori greșite).
+  const ogW = image ? imageWidth : DEFAULT_OG_WIDTH;
+  const ogH = image ? imageHeight : DEFAULT_OG_HEIGHT;
   const ogImageType = ogImage.endsWith('.webp')
     ? 'image/webp'
     : ogImage.endsWith('.png')
@@ -68,8 +83,8 @@ export default function SEO({
       <meta property="og:url" content={canonical} />
       <meta property="og:image" content={ogImage} />
       <meta property="og:image:type" content={ogImageType} />
-      <meta property="og:image:width" content="1200" />
-      <meta property="og:image:height" content="630" />
+      {ogW && <meta property="og:image:width" content={String(ogW)} />}
+      {ogH && <meta property="og:image:height" content={String(ogH)} />}
       <meta property="og:image:alt" content={imageAlt ?? fullTitle} />
 
       {/* OG — article (pentru blog) */}

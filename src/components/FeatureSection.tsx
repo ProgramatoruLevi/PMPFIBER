@@ -21,8 +21,8 @@ const features: Feature[] = [
   },
   {
     icon: Factory,
-    title: 'Producție proprie',
-    text: 'Fabricăm în România și controlăm calitatea de la cuvă până la finisajul final.',
+    title: 'Preț corect, direct de la producător',
+    text: 'Fabricăm noi, în România, fără intermediari — de aceea oferim calitate premium la un preț corect.',
   },
   {
     icon: SlidersHorizontal,

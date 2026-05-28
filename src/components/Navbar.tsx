@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Phone, Menu } from 'lucide-react';
 import { company, navLinks, telLink } from '../data/company';
+import { trackCallClick } from '../utils/analytics';
 import MobileMenu from './MobileMenu';
 
 export default function Navbar() {
@@ -50,10 +51,10 @@ export default function Navbar() {
                   to={link.to}
                   end={link.to === '/'}
                   className={({ isActive }) =>
-                    `relative rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300 ${
+                    `relative rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300 after:absolute after:-bottom-0.5 after:left-4 after:right-4 after:h-0.5 after:rounded-full after:bg-gold-gradient after:transition-opacity ${
                       isActive
-                        ? 'text-gold-light'
-                        : 'text-cream/80 hover:text-cream'
+                        ? 'text-gold-light after:opacity-100'
+                        : 'text-cream/80 after:opacity-0 hover:text-cream'
                     }`
                   }
                 >
@@ -67,6 +68,7 @@ export default function Navbar() {
           <div className="hidden items-center gap-3 lg:flex">
             <a
               href={telLink}
+              onClick={() => trackCallClick('navbar-desktop')}
               className="btn-call text-base px-6 py-3.5"
               aria-label={`Sună acum la ${company.phoneDisplay}`}
             >
@@ -87,6 +89,7 @@ export default function Navbar() {
           <div className="flex items-center gap-2 lg:hidden">
             <a
               href={telLink}
+              onClick={() => trackCallClick('navbar-mobile')}
               className="btn-call !px-4 !py-2.5"
               aria-label={`Sună la ${company.phoneDisplay}`}
             >

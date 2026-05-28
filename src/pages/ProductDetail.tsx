@@ -41,7 +41,6 @@ export default function ProductDetail() {
 
       <PageHeader
         eyebrow={product.categoryLabel}
-        title={product.name}
         crumbs={[
           { name: 'Acasă', path: '/' },
           { name: 'Ciubăre', path: '/ciubare' },

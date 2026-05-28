@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
 import { Maximize2 } from 'lucide-react';
 import Lightbox from './Lightbox';
+import ResponsiveImg from './ResponsiveImg';
 
 interface Props {
   images: string[];
@@ -21,27 +21,26 @@ export default function ProductGallery({ images, alt }: Props) {
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Imagine principală — click pentru zoom */}
+      {/* Imagine principală — click pentru zoom. Plain <img> (fără opacity:0)
+          ca să fie LCP rapid pe pagina de produs. */}
       <button
         type="button"
         onClick={() => setZoomOpen(true)}
-        className="group relative block aspect-[4/3] w-full overflow-hidden rounded-2xl border border-white/10 bg-ink-900"
+        className="product-media group relative block aspect-[4/3] w-full overflow-hidden rounded-2xl border border-white/10"
         aria-label="Mărește imaginea"
       >
-        <AnimatePresence mode="wait">
-          <motion.img
-            key={current}
-            src={current}
-            alt={alt}
-            initial={{ opacity: 0, scale: 1.02 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-            className="h-full w-full object-contain p-3 transition-transform duration-500 group-hover:scale-[1.03]"
-            loading="eager"
-            decoding="async"
-          />
-        </AnimatePresence>
+        <ResponsiveImg
+          key={current}
+          src={current}
+          sizes="(min-width:1024px) 45vw, 92vw"
+          alt={alt}
+          width={800}
+          height={600}
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+          className="h-full w-full object-contain p-3 transition-transform duration-500 group-hover:scale-[1.03]"
+        />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink-950/30 to-transparent" />
         {/* Indicator zoom */}
         <span className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-ink-950/70 px-3 py-1.5 text-xs font-medium text-cream backdrop-blur-md transition-colors group-hover:border-gold/50 group-hover:text-gold-light">
@@ -69,12 +68,15 @@ export default function ProductGallery({ images, alt }: Props) {
               }`}
               aria-label={`Imaginea ${i + 1}`}
             >
-              <img
+              <ResponsiveImg
                 src={img}
+                sizes="120px"
                 alt={`${alt} — imaginea ${i + 1}`}
+                width={120}
+                height={120}
                 loading="lazy"
                 decoding="async"
-                className="h-full w-full object-contain p-1"
+                className="product-media h-full w-full object-contain p-1"
               />
             </button>
           ))}

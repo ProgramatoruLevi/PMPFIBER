@@ -11,6 +11,7 @@ import {
   ChevronRight,
   BadgeCheck,
   ShieldCheck,
+  Factory,
 } from 'lucide-react';
 import {
   type Product,
@@ -19,14 +20,19 @@ import {
   offerLink,
 } from '../data/products';
 import { company, telLink, whatsappLink } from '../data/company';
+import { trackCallClick, trackWhatsAppClick } from '../utils/analytics';
 import ProductGallery from './ProductGallery';
 import Reveal from './Reveal';
 
 interface Props {
   product: Product;
+  /** Nivelul titlului produsului. 'h1' pe paginile de produs (antet compact),
+   *  'h2' când pagina are deja un H1 propriu (ex. pagina Cuve). */
+  titleAs?: 'h1' | 'h2';
 }
 
-export default function ProductDetails({ product: p }: Props) {
+export default function ProductDetails({ product: p, titleAs = 'h1' }: Props) {
+  const TitleTag = titleAs;
   const from = getFromPrice(p);
   const isSinglePrice =
     p.prices.length === 1 &&
@@ -60,36 +66,17 @@ export default function ProductDetails({ product: p }: Props) {
               )}
             </div>
 
-            <h1 className="mt-4 font-display text-3xl font-bold leading-tight text-cream sm:text-4xl lg:text-5xl">
+            <TitleTag className="mt-4 font-display text-3xl font-bold leading-tight text-cream sm:text-4xl lg:text-5xl">
               {p.name}
-            </h1>
-            <p className="mt-4 text-base leading-relaxed text-sand">
-              {p.longDescription ?? p.description}
-            </p>
+            </TitleTag>
 
-            {/* Chips rapide */}
-            <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3 text-sm text-cream/80">
-              {p.capacity && (
-                <span className="inline-flex items-center gap-2">
-                  <Users className="h-4 w-4 text-gold" />
-                  {p.capacity}
-                </span>
-              )}
-              {p.diameter && (
-                <span className="inline-flex items-center gap-2">
-                  <Ruler className="h-4 w-4 text-gold" />
-                  {p.diameter}
-                </span>
-              )}
-            </div>
-
-            {/* Prețuri */}
-            <div className="mt-7">
-              <h2 className="text-xs font-semibold uppercase tracking-widest text-sand/60">
+            {/* Prețuri — imediat sub titlu, înaintea descrierii (preț în față) */}
+            <div className="mt-5">
+              <h2 className="text-xs font-semibold uppercase tracking-widest text-sand/70">
                 {isSinglePrice ? 'Preț' : 'Prețuri'}
               </h2>
               {isSinglePrice ? (
-                <p className="mt-2 font-display text-4xl font-semibold text-gold-light">
+                <p className="mt-2 font-display text-4xl font-bold text-gold-light sm:text-5xl">
                   {formatLei(from)}
                 </p>
               ) : (
@@ -102,7 +89,7 @@ export default function ProductDetails({ product: p }: Props) {
                       <span className="block text-xs leading-snug text-sand">
                         {pr.label}
                       </span>
-                      <span className="mt-1 block font-display text-2xl font-semibold text-cream">
+                      <span className="mt-1 block font-display text-2xl font-bold text-gold-light">
                         {formatLei(pr.price)}
                       </span>
                     </div>
@@ -119,30 +106,59 @@ export default function ProductDetails({ product: p }: Props) {
                   Garanție 2 ani
                 </span>
               </div>
+              <p className="mt-3 inline-flex items-center gap-2 text-sm text-cream/80">
+                <Factory className="h-4 w-4 shrink-0 text-gold" />
+                Direct de la producător — preț corect pentru calitate premium.
+              </p>
             </div>
 
-            {/* CTA — accent pe apel */}
+            {/* Chips rapide */}
+            <div className="mt-5 flex flex-wrap gap-x-6 gap-y-3 text-sm text-cream/80">
+              {p.capacity && (
+                <span className="inline-flex items-center gap-2">
+                  <Users className="h-4 w-4 text-gold" />
+                  {p.capacity}
+                </span>
+              )}
+              {p.diameter && (
+                <span className="inline-flex items-center gap-2">
+                  <Ruler className="h-4 w-4 text-gold" />
+                  {p.diameter}
+                </span>
+              )}
+            </div>
+
+            <p className="mt-5 text-base leading-relaxed text-sand">
+              {p.longDescription ?? p.description}
+            </p>
+
+            {/* CTA — apelul telefonic este acțiunea primară */}
             <div className="mt-7 flex flex-col gap-3">
-              <Link to={offerLink(p.name)} className="btn-gold w-full text-base py-4">
-                <Sparkles className="h-5 w-5" />
-                Cere ofertă pentru acest model
-              </Link>
+              <a
+                href={telLink}
+                onClick={() => trackCallClick('product-detail')}
+                className="btn-call w-full py-4 text-base"
+              >
+                <Phone className="h-5 w-5" />
+                Sună acum · {company.phoneDisplay}
+              </a>
               <div className="grid grid-cols-2 gap-3">
-                <a href={telLink} className="btn-call w-full">
-                  <Phone className="h-5 w-5" />
-                  Sună acum
-                </a>
+                <Link to={offerLink(p.name)} className="btn-gold w-full">
+                  <Sparkles className="h-4 w-4" />
+                  Cere ofertă
+                </Link>
                 <a
                   href={whatsappLink(`Bună ziua! Sunt interesat(ă) de ${p.name}.`)}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => trackWhatsAppClick('product-detail')}
                   className="btn-whatsapp w-full"
                 >
                   <MessageCircle className="h-5 w-5" />
                   WhatsApp
                 </a>
               </div>
-              <p className="text-center text-xs text-sand/60">
+              <p className="text-center text-xs text-sand/70">
                 Răspuns rapid · {company.phoneDisplay}
               </p>
             </div>

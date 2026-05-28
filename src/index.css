@@ -22,6 +22,13 @@
     @apply bg-gold/30 text-cream;
   }
 
+  /* Focus vizibil implicit pe orice element interactiv fără unul propriu (a11y). */
+  a:focus-visible,
+  button:focus-visible,
+  [tabindex]:focus-visible {
+    @apply outline-none ring-2 ring-gold/60 ring-offset-2 ring-offset-ink-950 rounded-sm;
+  }
+
   /* Custom scrollbar for the premium dark feel */
   ::-webkit-scrollbar {
     width: 10px;
@@ -48,6 +55,21 @@
   img {
     -webkit-user-drag: none;
   }
+
+  /* Respectă preferința utilizatorului pentru mai puțină mișcare (accesibilitate). */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
 
 @layer components {
@@ -56,9 +78,9 @@
     @apply mx-auto w-full max-w-8xl px-5 sm:px-8 lg:px-12;
   }
 
-  /* Section vertical rhythm */
+  /* Section vertical rhythm — mai compact pe mobil ca să nu fie scroll inutil. */
   .section {
-    @apply py-20 md:py-28 lg:py-32;
+    @apply py-14 sm:py-20 md:py-28 lg:py-32;
   }
 
   /* Eyebrow / kicker label */
@@ -79,7 +101,8 @@
     @apply btn bg-gold-gradient text-ink-950 shadow-gold hover:-translate-y-0.5 hover:brightness-110;
   }
   .btn-call {
-    @apply btn bg-[#1f8a4c] text-cream shadow-[0_16px_40px_-12px_rgba(31,138,76,0.6)] hover:-translate-y-0.5 hover:brightness-110;
+    /* Verde mai închis (#167a3c) ca textul cream să atingă contrast WCAG AA (~4.8:1). */
+    @apply btn bg-[#167a3c] text-cream shadow-[0_16px_40px_-12px_rgba(22,122,60,0.6)] hover:-translate-y-0.5 hover:brightness-110;
   }
   .btn-whatsapp {
     @apply btn bg-[#25D366] text-[#06351c] shadow-[0_16px_40px_-12px_rgba(37,211,102,0.55)] hover:-translate-y-0.5 hover:brightness-105;
@@ -103,6 +126,22 @@
 
   .hairline {
     @apply h-px w-full bg-gradient-to-r from-transparent via-gold/30 to-transparent;
+  }
+
+  /* Suprafață uniformă, caldă, pentru pozele de produs decupate (object-contain).
+     Le face să arate intenționat și coerent, indiferent de fundalul pozei. */
+  .product-media {
+    @apply bg-ink-900;
+    background-image: radial-gradient(120% 95% at 50% 0%, rgba(180, 138, 74, 0.12), transparent 60%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 45%);
+  }
+
+  /* Skip-link: ascuns până la focus (a11y, bypass blocks). */
+  .skip-link {
+    @apply sr-only;
+  }
+  .skip-link:focus {
+    @apply not-sr-only fixed left-4 top-4 z-[100] rounded-full bg-gold-gradient px-5 py-3 text-sm font-semibold text-ink-950 shadow-gold;
   }
 }
 

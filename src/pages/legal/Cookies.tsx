@@ -37,7 +37,7 @@ export default function Cookies() {
               ]}
             />
 
-            <h3 className="mt-6 text-lg font-semibold text-cream">2.2 Cookie-uri analitice <span className="text-xs text-sand/60">(opțional, doar cu acord)</span></h3>
+            <h3 className="mt-6 text-lg font-semibold text-cream">2.2 Cookie-uri analitice <span className="text-xs text-sand/80">(opțional, doar cu acord)</span></h3>
             <p className="text-sm">Ne ajută să înțelegem cum este folosit site-ul. Datele sunt agregate și anonimizate.</p>
             <Table
               rows={[
@@ -47,7 +47,7 @@ export default function Cookies() {
               ]}
             />
 
-            <h3 className="mt-6 text-lg font-semibold text-cream">2.3 Cookie-uri marketing <span className="text-xs text-sand/60">(opțional, doar cu acord)</span></h3>
+            <h3 className="mt-6 text-lg font-semibold text-cream">2.3 Cookie-uri marketing <span className="text-xs text-sand/80">(opțional, doar cu acord)</span></h3>
             <p className="text-sm">Pentru remarketing și măsurarea conversiilor din campanii.</p>
             <Table
               rows={[['Google Ads', 'Conversii și remarketing', 'Variabilă']]}
@@ -83,7 +83,7 @@ export default function Cookies() {
             </p>
           </S>
 
-          <p className="text-xs text-sand/60">Ultima actualizare: 28 mai 2026</p>
+          <p className="text-xs text-sand/80">Ultima actualizare: 28 mai 2026</p>
         </div>
       </section>
     </>

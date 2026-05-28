@@ -5,7 +5,10 @@ import { getFromPrice, productPath } from '../data/products';
 import type { FaqItem } from '../data/faq';
 
 export const SITE = company.siteUrl;
-export const DEFAULT_OG_IMAGE = `${SITE}/images/imagine_background_hero.webp`;
+/** Imagine OG dedicată, format social 1200×630 (JPEG, suport universal). */
+export const DEFAULT_OG_IMAGE = `${SITE}/images/og-default.jpg`;
+export const DEFAULT_OG_WIDTH = 1200;
+export const DEFAULT_OG_HEIGHT = 630;
 
 export const absUrl = (path: string): string =>
   path.startsWith('http') ? path : `${SITE}${path.startsWith('/') ? '' : '/'}${path}`;
@@ -53,6 +56,21 @@ export const organizationLd = () => ({
       availableLanguage: ['Romanian'],
     },
   ],
+  // Program de lucru (derivat din company.schedule).
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '08:00',
+      closes: '18:00',
+    },
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: 'Saturday',
+      opens: '09:00',
+      closes: '14:00',
+    },
+  ],
   areaServed: { '@type': 'Country', name: 'România' },
   knowsLanguage: ['ro'],
 });
@@ -67,32 +85,71 @@ export const websiteLd = () => ({
   publisher: { '@id': `${SITE}/#organization` },
 });
 
-export const productLd = (p: Product) => ({
-  '@context': 'https://schema.org',
-  '@type': 'Product',
-  name: p.name,
-  description: p.description,
-  image: p.images.map((img) => absUrl(img)),
-  sku: p.slug,
-  category: p.categoryLabel,
-  brand: { '@type': 'Brand', name: company.brand },
-  manufacturer: { '@id': `${SITE}/#organization` },
-  offers: {
-    '@type': 'Offer',
-    url: absUrl(productPath(p)),
-    priceCurrency: 'RON',
-    price: getFromPrice(p),
-    availability: 'https://schema.org/InStock',
-    itemCondition: 'https://schema.org/NewCondition',
-    seller: { '@id': `${SITE}/#organization` },
-    hasMerchantReturnPolicy: {
-      '@type': 'MerchantReturnPolicy',
-      applicableCountry: 'RO',
-      returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
-      merchantReturnDays: 14,
-    },
-  },
-});
+/** Toate prețurile relevante ale unui produs (variante de capac, cuve, componente). */
+const allPrices = (p: Product): number[] => {
+  const pool: number[] = [];
+  p.prices?.forEach((pr) => pool.push(pr.price));
+  p.variants?.forEach((v) => pool.push(v.price));
+  p.components?.forEach((c) => pool.push(c.price));
+  return pool.length ? pool : [getFromPrice(p)];
+};
+
+/** Valabilitatea prețului — sfârșitul anului următor (recomandat de Google). */
+const priceValidUntil = (): string => `${new Date().getFullYear() + 1}-12-31`;
+
+const returnPolicy = {
+  '@type': 'MerchantReturnPolicy',
+  applicableCountry: 'RO',
+  returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+  merchantReturnDays: 14,
+};
+
+export const productLd = (p: Product) => {
+  const prices = allPrices(p);
+  const low = Math.min(...prices);
+  const high = Math.max(...prices);
+  const seller = { '@id': `${SITE}/#organization` };
+
+  const offers =
+    low === high
+      ? {
+          '@type': 'Offer',
+          url: absUrl(productPath(p)),
+          priceCurrency: 'RON',
+          price: low,
+          priceValidUntil: priceValidUntil(),
+          availability: 'https://schema.org/InStock',
+          itemCondition: 'https://schema.org/NewCondition',
+          seller,
+          hasMerchantReturnPolicy: returnPolicy,
+        }
+      : {
+          '@type': 'AggregateOffer',
+          url: absUrl(productPath(p)),
+          priceCurrency: 'RON',
+          lowPrice: low,
+          highPrice: high,
+          offerCount: prices.length,
+          priceValidUntil: priceValidUntil(),
+          availability: 'https://schema.org/InStock',
+          itemCondition: 'https://schema.org/NewCondition',
+          seller,
+          hasMerchantReturnPolicy: returnPolicy,
+        };
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: p.name,
+    description: p.description,
+    image: p.images.map((img) => absUrl(img)),
+    sku: p.slug,
+    category: p.categoryLabel,
+    brand: { '@type': 'Brand', name: company.brand },
+    manufacturer: { '@id': `${SITE}/#organization` },
+    offers,
+  };
+};
 
 /** ItemList JSON-LD pentru pagina /ciubare — îmbunătățește rezultatele rich list. */
 export const itemListLd = (products: Product[]) => ({

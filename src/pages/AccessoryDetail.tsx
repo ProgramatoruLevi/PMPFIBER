@@ -3,6 +3,7 @@ import { Check, Phone, MessageCircle, Sparkles, ArrowLeft, BadgeCheck, ShieldChe
 import SEO from '../components/SEO';
 import PageHeader from '../components/PageHeader';
 import ProductGallery from '../components/ProductGallery';
+import ResponsiveImg from '../components/ResponsiveImg';
 import Reveal from '../components/Reveal';
 import CTASection from '../components/CTASection';
 import NotFound from './NotFound';
@@ -61,7 +62,6 @@ export default function AccessoryDetail() {
 
       <PageHeader
         eyebrow="Accesoriu"
-        title={acc.name}
         crumbs={[
           { name: 'Acasă', path: '/' },
           { name: 'Accesorii', path: '/accesorii' },
@@ -86,7 +86,7 @@ export default function AccessoryDetail() {
               </p>
 
               <div className="mt-6">
-                <span className="text-xs uppercase tracking-widest text-sand/60">Preț</span>
+                <span className="text-xs uppercase tracking-widest text-sand/80">Preț</span>
                 <p className="font-display text-4xl font-semibold text-gold-light">
                   {formatLei(acc.price)}
                   {acc.unit && <span className="text-lg text-sand/70"> / {acc.unit}</span>}
@@ -136,7 +136,7 @@ export default function AccessoryDetail() {
                     WhatsApp
                   </a>
                 </div>
-                <p className="text-center text-xs text-sand/60">{company.phoneDisplay}</p>
+                <p className="text-center text-xs text-sand/80">{company.phoneDisplay}</p>
               </div>
             </div>
           </Reveal>
@@ -160,11 +160,15 @@ export default function AccessoryDetail() {
                 to={accessoryPath(a)}
                 className="group overflow-hidden rounded-2xl border border-white/10 bg-ink-800/60 transition-all hover:-translate-y-1.5 hover:border-gold/40"
               >
-                <div className="aspect-square overflow-hidden bg-ink-900">
-                  <img
+                <div className="product-media aspect-square overflow-hidden">
+                  <ResponsiveImg
                     src={a.images[0]}
-                    alt={a.name}
+                    sizes="(min-width:640px) 30vw, 92vw"
+                    alt={`${a.name} — accesoriu ciubăr PMPFiber`}
+                    width={400}
+                    height={400}
                     loading="lazy"
+                    decoding="async"
                     className="h-full w-full object-contain p-3 transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>

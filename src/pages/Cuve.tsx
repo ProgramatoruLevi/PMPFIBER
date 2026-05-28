@@ -38,7 +38,7 @@ export default function Cuve() {
 
       <section className="section">
         <div className="container-px">
-          <ProductDetails product={product} />
+          <ProductDetails product={product} titleAs="h2" />
         </div>
       </section>
 

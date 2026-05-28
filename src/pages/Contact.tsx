@@ -60,7 +60,7 @@ export default function Contact() {
     }));
   }, [searchParams]);
 
-  const validate = (): boolean => {
+  const validate = (): Errors => {
     const e: Errors = {};
     if (form.name.trim().length < 2) e.name = 'Introdu numele complet.';
     if (!/^[0-9+\s().-]{6,}$/.test(form.phone.trim()))
@@ -68,12 +68,17 @@ export default function Contact() {
     if (form.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim()))
       e.email = 'Adresa de email nu este validă.';
     setErrors(e);
-    return Object.keys(e).length === 0;
+    return e;
   };
 
   const handleSubmit = (ev: FormEvent) => {
     ev.preventDefault();
-    if (!validate()) return;
+    const e = validate();
+    const firstError = (['name', 'phone', 'email'] as const).find((k) => e[k]);
+    if (firstError) {
+      document.getElementById(firstError)?.focus();
+      return;
+    }
     // ── Integrare backend ───────────────────────────────────────────────
     // Formularul este pregătit pentru conectare la un serviciu real:
     // 1) Netlify Forms: adaugă pe <form> atributele
@@ -91,7 +96,7 @@ export default function Contact() {
       setForm((prev) => ({ ...prev, [field]: ev.target.value }));
 
   const inputCls =
-    'w-full rounded-xl border border-white/10 bg-ink-950/50 px-4 py-3 text-sm text-cream placeholder:text-sand/50 transition focus:border-gold/60 focus:outline-none focus:ring-1 focus:ring-gold/40';
+    'w-full rounded-xl border border-white/10 bg-ink-950/50 px-4 py-3 text-sm text-cream placeholder:text-sand/70 transition focus:border-gold/60 focus:outline-none focus:ring-1 focus:ring-gold/40 aria-[invalid=true]:border-red-400/70';
 
   return (
     <>
@@ -129,9 +134,11 @@ export default function Contact() {
                 {submitted ? (
                   <motion.div
                     key="success"
+                    role="status"
+                    aria-live="polite"
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="mt-8 rounded-2xl border border-[#1f8a4c]/40 bg-[#1f8a4c]/10 p-8 text-center"
+                    className="mt-8 rounded-2xl border border-[#34d27f]/40 bg-[#34d27f]/10 p-8 text-center"
                   >
                     <CheckCircle2 className="mx-auto h-12 w-12 text-[#37d07f]" />
                     <h3 className="mt-4 font-display text-xl text-cream">
@@ -174,13 +181,21 @@ export default function Contact() {
                         <input
                           id="name"
                           type="text"
+                          required
                           value={form.name}
                           onChange={update('name')}
                           className={inputCls}
                           placeholder="Numele tău"
                           autoComplete="name"
+                          aria-required="true"
+                          aria-invalid={!!errors.name}
+                          aria-describedby={errors.name ? 'name-error' : undefined}
                         />
-                        {errors.name && <p className="mt-1 text-xs text-red-400">{errors.name}</p>}
+                        {errors.name && (
+                          <p id="name-error" role="alert" className="mt-1 text-xs text-red-300">
+                            {errors.name}
+                          </p>
+                        )}
                       </div>
                       <div>
                         <label htmlFor="phone" className="mb-1.5 block text-sm text-cream/90">
@@ -189,13 +204,21 @@ export default function Contact() {
                         <input
                           id="phone"
                           type="tel"
+                          required
                           value={form.phone}
                           onChange={update('phone')}
                           className={inputCls}
                           placeholder="07xx xxx xxx"
                           autoComplete="tel"
+                          aria-required="true"
+                          aria-invalid={!!errors.phone}
+                          aria-describedby={errors.phone ? 'phone-error' : undefined}
                         />
-                        {errors.phone && <p className="mt-1 text-xs text-red-400">{errors.phone}</p>}
+                        {errors.phone && (
+                          <p id="phone-error" role="alert" className="mt-1 text-xs text-red-300">
+                            {errors.phone}
+                          </p>
+                        )}
                       </div>
                     </div>
 
@@ -211,8 +234,14 @@ export default function Contact() {
                         className={inputCls}
                         placeholder="email@exemplu.ro"
                         autoComplete="email"
+                        aria-invalid={!!errors.email}
+                        aria-describedby={errors.email ? 'email-error' : undefined}
                       />
-                      {errors.email && <p className="mt-1 text-xs text-red-400">{errors.email}</p>}
+                      {errors.email && (
+                        <p id="email-error" role="alert" className="mt-1 text-xs text-red-300">
+                          {errors.email}
+                        </p>
+                      )}
                     </div>
 
                     <div>
@@ -247,7 +276,7 @@ export default function Contact() {
                       <Send className="h-4 w-4" />
                       Trimite cererea
                     </button>
-                    <p className="text-center text-xs text-sand/60">
+                    <p className="text-center text-xs text-sand/80">
                       Sau sună direct la{' '}
                       <a href={telLink} className="text-gold-light underline-offset-2 hover:underline">
                         {company.phoneDisplay}
