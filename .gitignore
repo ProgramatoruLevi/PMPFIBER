@@ -6,6 +6,10 @@ dist
 .vite-react-ssg-temp
 *.tsbuildinfo
 
+# arhive de poze (sursă), nu intră în repo — pozele dezarhivate stau în public/images
+*.zip
+__MACOSX/
+
 # logs
 *.log
 npm-debug.log*
