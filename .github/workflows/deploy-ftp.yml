@@ -34,6 +34,18 @@ jobs:
       - name: Ensure .htaccess is in dist
         run: cp public/.htaccess dist/.htaccess
 
+      - name: Inject SMTP password into contact.php
+        env:
+          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+        run: |
+          if [ -n "$MAIL_PASSWORD" ] && [ -f dist/contact.php ]; then
+            esc=$(printf '%s' "$MAIL_PASSWORD" | sed -e 's/[\/&|]/\\&/g')
+            sed -i "s|__MAIL_PASSWORD__|$esc|" dist/contact.php
+            echo "SMTP password injected into contact.php"
+          else
+            echo "::warning::MAIL_PASSWORD missing — formularul de contact nu va putea trimite."
+          fi
+
       - name: Check FTP secrets
         id: ftp-secrets
         env:

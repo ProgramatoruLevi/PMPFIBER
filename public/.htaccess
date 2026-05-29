@@ -47,7 +47,14 @@
   RewriteCond %{REQUEST_FILENAME}.html -f
   RewriteRule ^(.+?)/?$ /$1.html [L]
 
-  # Restul cad pe SPA-ul prerenderat (hidratare + pagina 404).
+  # Cererile de ASSET-uri inexistente (js/css/json/imagini/...) NU cad pe
+  # index.html — primesc 404 curat. Astfel, după un deploy, un client cu cache
+  # vechi ce cere un chunk șters primește 404 (nu HTML), iar Vite reîncarcă
+  # automat pagina. (HTML servit ca JS/JSON dădea „Unexpected token '<'".)
+  RewriteCond %{REQUEST_URI} \.(js|mjs|css|json|map|webp|png|jpe?g|gif|svg|ico|woff2?|ttf|eot|txt|xml|webmanifest|pdf|php)$ [NC]
+  RewriteRule ^ - [L]
+
+  # Restul (rute „pagină", fără extensie) cad pe SPA-ul prerenderat / 404.
   RewriteRule ^ /index.html [L]
 </IfModule>
 

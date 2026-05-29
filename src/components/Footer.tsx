@@ -42,25 +42,25 @@ export default function Footer() {
             </a>
           </div>
 
-          {/* Badge-uri ANPC */}
-          <div className="mt-7 space-y-2.5">
+          {/* Badge-uri oficiale ANPC (SAL + SOL/ODR) */}
+          <div className="mt-7 flex flex-wrap items-center gap-3">
             <a
               href="https://anpc.ro/ce-este-sal/"
               target="_blank"
               rel="noreferrer"
-              className="block max-w-[200px] transition-opacity hover:opacity-80"
+              className="inline-block rounded-md bg-white p-1.5 transition-opacity hover:opacity-90"
               aria-label="ANPC — Soluționarea Alternativă a Litigiilor"
             >
-              <img src="/images/anpc-sal.svg" alt="ANPC SAL — Soluționarea Alternativă a Litigiilor" className="h-12 w-auto" />
+              <img src="/images/anpc-sal.svg" alt="ANPC SAL — Soluționarea Alternativă a Litigiilor" className="h-10 w-auto" />
             </a>
             <a
               href="https://ec.europa.eu/consumers/odr"
               target="_blank"
               rel="noreferrer"
-              className="block max-w-[200px] transition-opacity hover:opacity-80"
+              className="inline-block rounded-md bg-white p-1.5 transition-opacity hover:opacity-90"
               aria-label="ANPC — Soluționarea Online a Litigiilor (ODR UE)"
             >
-              <img src="/images/anpc-sol.svg" alt="ANPC SOL — Soluționarea Online a Litigiilor (ODR UE)" className="h-12 w-auto" />
+              <img src="/images/anpc-sol.svg" alt="ANPC SOL — Soluționarea Online a Litigiilor (ODR UE)" className="h-10 w-auto" />
             </a>
           </div>
         </div>
