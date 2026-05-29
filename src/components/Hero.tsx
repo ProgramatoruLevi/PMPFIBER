@@ -45,15 +45,15 @@ export default function Hero() {
       <section className="relative bg-ink-950 md:hidden">
         <div className="relative">
           <img
-            src="/images/imagine_background_hero_mobil-w1080.webp"
-            srcSet="/images/imagine_background_hero_mobil-w768.webp 768w, /images/imagine_background_hero_mobil-w1080.webp 1080w"
+            src="/images/imagine_background_hero_mobil_tub-w1080.webp"
+            srcSet="/images/imagine_background_hero_mobil_tub-w768.webp 768w, /images/imagine_background_hero_mobil_tub-w1080.webp 1080w"
             sizes="100vw"
             alt="Ciubăr premium PMPFiber pe malul unui lac de munte, la apus"
             width={1800}
-            height={3199}
+            height={1200}
             fetchPriority="high"
             decoding="async"
-            className="aspect-[4/5] w-full object-cover object-[center_56%]"
+            className="aspect-[3/2] w-full object-cover"
           />
           {/* Scrim sus pentru navbar */}
           <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-ink-950/75 to-transparent" />
