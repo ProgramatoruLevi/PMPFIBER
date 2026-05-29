@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -15,6 +15,7 @@ import PageHeader from '../components/PageHeader';
 import Reveal from '../components/Reveal';
 import { company, telLink, whatsappLink } from '../data/company';
 import { products } from '../data/products';
+import { trackOfferRequest } from '../utils/analytics';
 import { organizationLd, breadcrumbLd } from '../utils/seo';
 
 interface FormState {
@@ -44,6 +45,9 @@ export default function Contact() {
   const [form, setForm] = useState<FormState>(initialForm);
   const [errors, setErrors] = useState<Errors>({});
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState(false);
+  const honeypot = useRef<HTMLInputElement>(null);
 
   // Preselectează modelul + mesajul din query params (?model=...&config=...)
   useEffect(() => {
@@ -71,7 +75,7 @@ export default function Contact() {
     return e;
   };
 
-  const handleSubmit = (ev: FormEvent) => {
+  const handleSubmit = async (ev: FormEvent) => {
     ev.preventDefault();
     const e = validate();
     const firstError = (['name', 'phone', 'email'] as const).find((k) => e[k]);
@@ -79,15 +83,27 @@ export default function Contact() {
       document.getElementById(firstError)?.focus();
       return;
     }
-    // ── Integrare backend ───────────────────────────────────────────────
-    // Formularul este pregătit pentru conectare la un serviciu real:
-    // 1) Netlify Forms: adaugă pe <form> atributele
-    //    name="contact" data-netlify="true" și un input ascuns
-    //    <input type="hidden" name="form-name" value="contact" />
-    // 2) Formspree: setează action="https://formspree.io/f/XXXX" method="POST"
-    // 3) API propriu: trimite `form` via fetch('/api/contact', {...}).
-    // Momentan afișăm doar confirmarea de succes.
-    setSubmitted(true);
+    setSending(true);
+    setSendError(false);
+    try {
+      // Trimite la endpoint-ul PHP de pe hosting (contact@pmpfiber.ro).
+      const res = await fetch('/contact.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...form, website: honeypot.current?.value ?? '' }),
+      });
+      const data = (await res.json().catch(() => ({ ok: res.ok }))) as { ok?: boolean };
+      if (res.ok && data.ok) {
+        setSubmitted(true);
+        trackOfferRequest(form.model || undefined);
+      } else {
+        setSendError(true);
+      }
+    } catch {
+      setSendError(true);
+    } finally {
+      setSending(false);
+    }
   };
 
   const update =
@@ -272,9 +288,31 @@ export default function Contact() {
                       />
                     </div>
 
-                    <button type="submit" className="btn-gold w-full py-4 text-base">
+                    {/* Honeypot anti-spam (ascuns vizual; boții îl completează) */}
+                    <input
+                      ref={honeypot}
+                      type="text"
+                      name="website"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      aria-hidden="true"
+                      className="absolute left-[-9999px] h-0 w-0 opacity-0"
+                    />
+
+                    {sendError && (
+                      <p role="alert" className="rounded-xl border border-red-400/40 bg-red-400/10 px-4 py-3 text-sm text-red-200">
+                        Nu am putut trimite cererea. Te rugăm încearcă din nou sau sună-ne la{' '}
+                        <a href={telLink} className="font-semibold underline">{company.phoneDisplay}</a>.
+                      </p>
+                    )}
+
+                    <button
+                      type="submit"
+                      disabled={sending}
+                      className="btn-gold w-full py-4 text-base disabled:cursor-not-allowed disabled:opacity-70"
+                    >
                       <Send className="h-4 w-4" />
-                      Trimite cererea
+                      {sending ? 'Se trimite…' : 'Trimite cererea'}
                     </button>
                     <p className="text-center text-xs text-sand/80">
                       Sau sună direct la{' '}
