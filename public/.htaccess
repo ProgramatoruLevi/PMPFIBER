@@ -33,9 +33,10 @@
   RewriteEngine On
   RewriteBase /
 
-  # Forțează HTTPS + www (decomentează după ce confirmi domeniul/SSL în cPanel).
-  # RewriteCond %{HTTPS} off
-  # RewriteRule ^ https://www.pmpfiber.ro%{REQUEST_URI} [L,R=301]
+  # Canonical: forțează HTTPS + www → https://www.pmpfiber.ro (un singur URL, bun SEO).
+  RewriteCond %{HTTPS} off [OR]
+  RewriteCond %{HTTP_HOST} !^www\. [NC]
+  RewriteRule ^ https://www.pmpfiber.ro%{REQUEST_URI} [L,R=301]
 
   # Fișierele și folderele existente trec direct.
   RewriteCond %{REQUEST_FILENAME} -f [OR]
