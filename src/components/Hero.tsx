@@ -40,32 +40,33 @@ function PriceAnchor({ className = '' }: { className?: string }) {
 export default function Hero() {
   return (
     <>
-      {/* ════════════ MOBIL — hero full-bleed, imersiv ════════════ */}
-      <section className="relative isolate flex min-h-[92svh] flex-col justify-end overflow-hidden md:hidden">
-        <img
-          src="/images/imagine_background_hero_mobil-w1080.webp"
-          srcSet="/images/imagine_background_hero_mobil-w768.webp 768w, /images/imagine_background_hero_mobil-w1080.webp 1080w"
-          sizes="100vw"
-          alt="Ciubăr premium PMPFiber pe malul unui lac de munte, la apus"
-          width={1800}
-          height={3199}
-          fetchPriority="high"
-          decoding="async"
-          className="absolute inset-0 -z-10 h-full w-full object-cover"
-        />
-        {/* Gradient sus (doar pentru navbar) + jos (concentrat în treimea de
-            jos, ca să rămână VIZIBIL ciubărul deasupra textului). */}
-        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-ink-950/55 via-transparent to-transparent" />
-        <div
-          className="absolute inset-0 -z-10"
-          style={{
-            backgroundImage:
-              'linear-gradient(to top, #0E0F0D 0%, rgba(14,15,13,0.82) 24%, rgba(14,15,13,0.32) 46%, transparent 62%)',
-          }}
-        />
+      {/* ════════════ MOBIL — imagine full-width sus (ciubărul complet vizibil),
+          text + preț pe fundal curat dedesubt. ════════════ */}
+      <section className="relative bg-ink-950 md:hidden">
+        <div className="relative">
+          <img
+            src="/images/imagine_background_hero_mobil-w1080.webp"
+            srcSet="/images/imagine_background_hero_mobil-w768.webp 768w, /images/imagine_background_hero_mobil-w1080.webp 1080w"
+            sizes="100vw"
+            alt="Ciubăr premium PMPFiber pe malul unui lac de munte, la apus"
+            width={1800}
+            height={3199}
+            fetchPriority="high"
+            decoding="async"
+            className="aspect-[4/5] w-full object-cover object-[center_56%]"
+          />
+          {/* Scrim sus pentru navbar */}
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-ink-950/75 to-transparent" />
+          {/* Blend jos către secțiunea de text */}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-ink-950 via-ink-950/60 to-transparent" />
+        </div>
 
-        <div className="container-px animate-fade-up pb-9 pt-28 [text-shadow:0_1px_18px_rgba(0,0,0,0.55)]">
-          <h1 className="font-display text-[2.05rem] font-bold leading-[1.08] text-cream">
+        <div className="container-px relative -mt-4 animate-fade-up pb-10">
+          <span className="eyebrow">
+            <span className="h-px w-8 bg-gold/60" />
+            Producător român de ciubăre premium
+          </span>
+          <h1 className="mt-3 font-display text-[2.1rem] font-bold leading-[1.08] text-cream">
             Ciubăre premium pentru <span className="text-gold-gradient">relaxare autentică</span>
           </h1>
 
