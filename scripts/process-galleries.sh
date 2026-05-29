@@ -23,6 +23,8 @@ MAP=(
   "square-comfort|PMPFiber square spa confort 200x200"
   "square-luxury|PMPFiber square spa luxury 200x200|PMPFiber square spa luxury 200x200(inca cateva poze)"
   "cuve|cuve_din_sticla"
+  "incastrabil|incastrabile"
+  "icetube|icetube"
 )
 
 convert_one() {

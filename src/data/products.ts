@@ -518,7 +518,7 @@ export const products: Product[] = [
     description: 'Sisteme modulare pentru montaj în terasă sau podea.',
     longDescription:
       'Sistemele încastrabile PMPFiber sunt soluții modulare gândite pentru integrarea ciubărului direct în terasă, deck sau foișor. Alegi componentele de care ai nevoie și construiești configurația potrivită pentru spațiul tău.',
-    images: [IMG('ciubar13.webp')],
+    images: [IMG('ciubar13.webp'), ...GALLERY('incastrabil', 11)],
     features: [
       'Sisteme modulare pentru montaj în terasă sau podea',
       'Disponibil pentru model rotund 200 cm',
@@ -558,7 +558,7 @@ export const products: Product[] = [
     description: 'Terapie cu apă rece pentru recuperare și revitalizare.',
     longDescription:
       'PMPFiber IceTube este soluția compactă pentru terapia cu apă rece (cold plunge). Finisajul premium din lemn și capacul termoizolant inclus o transformă într-un accesoriu de recuperare elegant pentru curte, terasă sau zonă wellness.',
-    images: [IMG('ciubar14.webp')],
+    images: [IMG('ciubar14.webp'), ...GALLERY('icetube', 3)],
     features: [
       'Design compact și elegant',
       'Finisaj exterior premium din lemn',
