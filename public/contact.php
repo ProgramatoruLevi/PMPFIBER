@@ -144,55 +144,93 @@ $clientContent =
   . '</div>'
   . '<p style="margin:18px 0 0;color:#6b6b6b;font-size:13px;line-height:1.6;">Toate prețurile includ TVA · garanție 2 ani · livrare în toată România.<br>Direct de la producător — preț corect pentru calitate premium.</p>';
 
-// ── Trimitere SMTP ──────────────────────────────────────────────────────
-function makeMailer(string $pass): PHPMailer {
-  $m = new PHPMailer(true);
+// ── Trimitere SMTP (încearcă mai multe configurații până prinde una) ──────
+$SMTP_PASS_LOCAL = $SMTP_PASS;
+$debug = (($_GET['diag'] ?? '') === 'pmp7421diag');
+
+// host, port, securitate
+$CONFIGS = [
+  ['localhost', 587, PHPMailer::ENCRYPTION_STARTTLS],
+  ['localhost', 465, PHPMailer::ENCRYPTION_SMTPS],
+  ['mail.pmpfiber.ro', 465, PHPMailer::ENCRYPTION_SMTPS],
+  ['mail.pmpfiber.ro', 587, PHPMailer::ENCRYPTION_STARTTLS],
+  ['localhost', 25, ''],
+];
+
+$configure = static function (PHPMailer $m, array $cfg) use ($SMTP_PASS_LOCAL): void {
+  [$host, $port, $secure] = $cfg;
   $m->isSMTP();
-  $m->Host = 'localhost';
+  $m->Host = $host;
+  $m->Port = $port;
   $m->SMTPAuth = true;
   $m->Username = MAILBOX;
-  $m->Password = $pass;
-  $m->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-  $m->Port = 465;
+  $m->Password = $SMTP_PASS_LOCAL;
+  if ($secure !== '') {
+    $m->SMTPSecure = $secure;
+  } else {
+    $m->SMTPSecure = '';
+    $m->SMTPAutoTLS = false;
+  }
   $m->SMTPOptions = ['ssl' => ['verify_peer' => false, 'verify_peer_name' => false, 'allow_self_signed' => true]];
   $m->CharSet = 'UTF-8';
   $m->Encoding = 'base64';
-  return $m;
-}
+  $m->Timeout = 12;
+};
 
-try {
-  // 1) Notificare firmă
-  $biz = makeMailer($SMTP_PASS);
-  $biz->setFrom(MAILBOX, BRAND . ' — Formular');
-  $biz->addAddress(MAILBOX);
-  if ($email !== '') {
-    $biz->addReplyTo($email, $name);
-  }
-  $biz->isHTML(true);
-  $biz->Subject = 'Cerere site' . ($model !== '' ? ' — ' . $model : '') . ' — ' . $name;
-  $biz->Body = $wrap($businessContent);
-  $biz->AltBody = "Cerere nouă\nNume: $name\nTelefon: $phone\nEmail: " . ($email ?: '—') . "\nModel: " . ($model ?: '—') . "\nMesaj: " . ($message ?: '—');
-  $biz->send();
+$attempts = [];
+$workingCfg = null;
 
-  // 2) Auto-reply client (best-effort)
-  if ($email !== '') {
-    try {
-      $rep = makeMailer($SMTP_PASS);
-      $rep->setFrom(MAILBOX, BRAND);
-      $rep->addAddress($email, $name);
-      $rep->addReplyTo(MAILBOX, BRAND);
-      $rep->isHTML(true);
-      $rep->Subject = 'Am primit cererea ta — ' . BRAND;
-      $rep->Body = $wrap($clientContent);
-      $rep->AltBody = "Bună, $firstName! Mulțumim că ne-ai contactat. Revenim curând cu o ofertă. Telefon: " . PHONE;
-      $rep->send();
-    } catch (Exception $ignored) {
-      // dacă auto-reply-ul eșuează, cererea tot a ajuns la firmă
+foreach ($CONFIGS as $cfg) {
+  try {
+    $biz = new PHPMailer(true);
+    $configure($biz, $cfg);
+    $biz->setFrom(MAILBOX, BRAND . ' — Formular');
+    $biz->addAddress(MAILBOX);
+    if ($email !== '') {
+      $biz->addReplyTo($email, $name);
     }
+    $biz->isHTML(true);
+    $biz->Subject = 'Cerere site' . ($model !== '' ? ' — ' . $model : '') . ' — ' . $name;
+    $biz->Body = $wrap($businessContent);
+    $biz->AltBody = "Cerere nouă\nNume: $name\nTelefon: $phone\nEmail: " . ($email ?: '—') . "\nModel: " . ($model ?: '—') . "\nMesaj: " . ($message ?: '—');
+    $biz->send();
+    $workingCfg = $cfg;
+    break;
+  } catch (Exception $ex) {
+    $attempts[] = $cfg[0] . ':' . $cfg[1] . ' → ' . (isset($biz) ? $biz->ErrorInfo : $ex->getMessage());
   }
-
-  echo json_encode(['ok' => true]);
-} catch (Exception $ex) {
-  http_response_code(500);
-  echo json_encode(['ok' => false, 'error' => 'Trimitere eșuată']);
 }
+
+if ($workingCfg === null) {
+  http_response_code(500);
+  $out = ['ok' => false, 'error' => 'Trimitere eșuată'];
+  if ($debug) {
+    $out['attempts'] = $attempts;
+  }
+  echo json_encode($out);
+  exit;
+}
+
+// Auto-reply client pe configurația care a funcționat (best-effort).
+if ($email !== '') {
+  try {
+    $rep = new PHPMailer(true);
+    $configure($rep, $workingCfg);
+    $rep->setFrom(MAILBOX, BRAND);
+    $rep->addAddress($email, $name);
+    $rep->addReplyTo(MAILBOX, BRAND);
+    $rep->isHTML(true);
+    $rep->Subject = 'Am primit cererea ta — ' . BRAND;
+    $rep->Body = $wrap($clientContent);
+    $rep->AltBody = "Bună, $firstName! Mulțumim că ne-ai contactat. Revenim curând cu o ofertă. Telefon: " . PHONE;
+    $rep->send();
+  } catch (Exception $ignored) {
+    // dacă auto-reply-ul eșuează, cererea tot a ajuns la firmă
+  }
+}
+
+$out = ['ok' => true];
+if ($debug) {
+  $out['via'] = $workingCfg[0] . ':' . $workingCfg[1];
+}
+echo json_encode($out);

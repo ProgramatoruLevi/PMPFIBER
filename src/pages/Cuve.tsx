@@ -2,13 +2,15 @@ import SEO from '../components/SEO';
 import PageHeader from '../components/PageHeader';
 import ProductDetails from '../components/ProductDetails';
 import CTASection from '../components/CTASection';
+import NotFound from './NotFound';
 import { getProductBySlug } from '../data/products';
 import { organizationLd, productLd, breadcrumbLd } from '../utils/seo';
 
 const SLUG = 'cuve-fibra-de-sticla';
 
 export default function Cuve() {
-  const product = getProductBySlug(SLUG)!;
+  const product = getProductBySlug(SLUG);
+  if (!product) return <NotFound />;
   const path = '/cuve-fibra-de-sticla';
 
   return (
