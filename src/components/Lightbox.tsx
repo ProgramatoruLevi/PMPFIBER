@@ -15,17 +15,20 @@ interface Props {
 const MIN = 1;
 const MAX = 4;
 const clamp = (v: number, lo: number, hi: number) => Math.min(Math.max(v, lo), hi);
+const SWIPE_THRESHOLD = 45; // px
 
 /**
- * Lightbox fullscreen cu zoom (scroll / butoane / dublu-click / pinch),
- * pan prin drag și navigare între imagini. Fără dependențe externe.
+ * Lightbox fullscreen. Pe mobil: pinch cu 2 degete (zoom), swipe stânga/dreapta
+ * (schimbă poza), drag cu un deget când e mărit (pan), dublu-tap (zoom).
+ * Gesturile folosesc listenere native non-passive ca să meargă pe toate
+ * telefoanele. Pe desktop: scroll/butoane/dublu-click pentru zoom, săgeți+tastatură.
  */
 export default function Lightbox({ images, index, alt, open, onClose, onIndexChange }: Props) {
   const [scale, setScale] = useState(1);
   const [pos, setPos] = useState({ x: 0, y: 0 });
-  const dragging = useRef(false);
+  const dragging = useRef(false); // pan cu mouse (desktop)
   const last = useRef({ x: 0, y: 0 });
-  const pinch = useRef<{ dist: number; scale: number } | null>(null);
+  const areaRef = useRef<HTMLDivElement>(null);
 
   const reset = useCallback(() => {
     setScale(1);
@@ -40,10 +43,15 @@ export default function Lightbox({ images, index, alt, open, onClose, onIndexCha
     [index, images.length, onIndexChange, reset],
   );
 
+  const toggleZoom = useCallback(() => {
+    setScale((s) => (s > 1 ? 1 : 2.5));
+    setPos({ x: 0, y: 0 });
+  }, []);
+
   // Focus trap + Escape + blocare scroll + restaurare focus (a11y).
   const dialogRef = useFocusTrap<HTMLDivElement>(open, onClose);
 
-  // Navigare cu săgeți (Escape/scroll-lock sunt gestionate de useFocusTrap).
+  // Navigare cu săgeți.
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
@@ -54,11 +62,123 @@ export default function Lightbox({ images, index, alt, open, onClose, onIndexCha
     return () => window.removeEventListener('keydown', onKey);
   }, [open, go]);
 
-  // Resetează zoom-ul când se schimbă imaginea sau se deschide
+  // Resetează zoom-ul când se schimbă imaginea sau se deschide.
   useEffect(() => {
     reset();
   }, [index, open, reset]);
 
+  // ── Gesturi touch (native, non-passive) ─────────────────────────────────
+  // Refs „live" ca efectul să depindă doar de `open` (fără closures învechite).
+  const scaleRef = useRef(scale);
+  scaleRef.current = scale;
+  const posRef = useRef(pos);
+  posRef.current = pos;
+  const goRef = useRef(go);
+  goRef.current = go;
+  const toggleRef = useRef(toggleZoom);
+  toggleRef.current = toggleZoom;
+
+  useEffect(() => {
+    if (!open) return;
+    const el = areaRef.current;
+    if (!el) return;
+
+    const g = {
+      mode: 'none' as 'none' | 'swipe' | 'pan' | 'pinch',
+      startX: 0,
+      startY: 0,
+      startPos: { x: 0, y: 0 },
+      pinchDist: 0,
+      pinchScale: 1,
+      dx: 0,
+      dy: 0,
+      lastTap: 0,
+    };
+    const distance = (a: Touch, b: Touch) => Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+
+    const onStart = (e: TouchEvent) => {
+      if (e.touches.length === 2) {
+        g.mode = 'pinch';
+        g.pinchDist = distance(e.touches[0], e.touches[1]);
+        g.pinchScale = scaleRef.current;
+        return;
+      }
+      const t = e.touches[0];
+      const now = e.timeStamp;
+      if (now - g.lastTap < 300) {
+        // dublu-tap → zoom
+        e.preventDefault();
+        toggleRef.current();
+        g.mode = 'none';
+        g.lastTap = 0;
+        return;
+      }
+      g.lastTap = now;
+      g.startX = t.clientX;
+      g.startY = t.clientY;
+      g.startPos = { ...posRef.current };
+      g.dx = 0;
+      g.dy = 0;
+      g.mode = scaleRef.current > 1 ? 'pan' : 'swipe';
+    };
+
+    const onMove = (e: TouchEvent) => {
+      if (g.mode === 'pinch' && e.touches.length === 2) {
+        e.preventDefault();
+        const d = distance(e.touches[0], e.touches[1]);
+        if (g.pinchDist > 0) {
+          setScale(clamp(+(g.pinchScale * (d / g.pinchDist)).toFixed(3), MIN, MAX));
+        }
+        return;
+      }
+      if (e.touches.length !== 1) return;
+      const t = e.touches[0];
+      g.dx = t.clientX - g.startX;
+      g.dy = t.clientY - g.startY;
+      if (g.mode === 'pan') {
+        e.preventDefault();
+        setPos({ x: g.startPos.x + g.dx, y: g.startPos.y + g.dy });
+      } else if (g.mode === 'swipe' && Math.abs(g.dx) > Math.abs(g.dy)) {
+        // swipe orizontal — blochează scroll-ul vertical
+        e.preventDefault();
+      }
+    };
+
+    const onEnd = (e: TouchEvent) => {
+      if (g.mode === 'swipe' && Math.abs(g.dx) > SWIPE_THRESHOLD && Math.abs(g.dx) > Math.abs(g.dy)) {
+        goRef.current(g.dx < 0 ? 1 : -1); // swipe stânga → poza următoare
+      }
+      if (e.touches.length === 0) {
+        if (g.mode === 'pinch' && scaleRef.current <= 1.05) {
+          setScale(1);
+          setPos({ x: 0, y: 0 });
+        }
+        g.mode = 'none';
+      } else if (e.touches.length === 1 && g.mode === 'pinch') {
+        // pinch → un deget rămas: continuă ca pan/swipe
+        const t = e.touches[0];
+        g.startX = t.clientX;
+        g.startY = t.clientY;
+        g.startPos = { ...posRef.current };
+        g.dx = 0;
+        g.dy = 0;
+        g.mode = scaleRef.current > 1 ? 'pan' : 'swipe';
+      }
+    };
+
+    el.addEventListener('touchstart', onStart, { passive: false });
+    el.addEventListener('touchmove', onMove, { passive: false });
+    el.addEventListener('touchend', onEnd, { passive: false });
+    el.addEventListener('touchcancel', onEnd, { passive: false });
+    return () => {
+      el.removeEventListener('touchstart', onStart);
+      el.removeEventListener('touchmove', onMove);
+      el.removeEventListener('touchend', onEnd);
+      el.removeEventListener('touchcancel', onEnd);
+    };
+  }, [open]);
+
+  // ── Zoom desktop (scroll/butoane) + pan cu mouse ─────────────────────────
   const zoomBy = (delta: number) => {
     setScale((s) => {
       const next = clamp(+(s + delta).toFixed(2), MIN, MAX);
@@ -66,50 +186,23 @@ export default function Lightbox({ images, index, alt, open, onClose, onIndexCha
       return next;
     });
   };
-
   const onWheel = (e: React.WheelEvent) => {
     e.preventDefault();
     zoomBy(e.deltaY > 0 ? -0.3 : 0.3);
   };
-
-  const toggleZoom = () => {
-    if (scale > 1) reset();
-    else setScale(2.5);
-  };
-
-  // Pan cu pointer (mouse / touch single)
+  // Pan doar cu mouse-ul (touch e gestionat de listenerele native de mai sus).
   const onPointerDown = (e: React.PointerEvent) => {
-    if (scale <= 1) return;
+    if (e.pointerType !== 'mouse' || scale <= 1) return;
     dragging.current = true;
     last.current = { x: e.clientX - pos.x, y: e.clientY - pos.y };
     (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
   };
   const onPointerMove = (e: React.PointerEvent) => {
-    if (!dragging.current) return;
+    if (e.pointerType !== 'mouse' || !dragging.current) return;
     setPos({ x: e.clientX - last.current.x, y: e.clientY - last.current.y });
   };
   const onPointerUp = () => {
     dragging.current = false;
-  };
-
-  // Pinch-to-zoom (mobil)
-  const dist = (t: React.TouchList) =>
-    Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
-  const onTouchStart = (e: React.TouchEvent) => {
-    if (e.touches.length === 2) pinch.current = { dist: dist(e.touches), scale };
-  };
-  const onTouchMove = (e: React.TouchEvent) => {
-    if (e.touches.length === 2 && pinch.current) {
-      e.preventDefault();
-      const ratio = dist(e.touches) / pinch.current.dist;
-      setScale(clamp(+(pinch.current.scale * ratio).toFixed(2), MIN, MAX));
-    }
-  };
-  const onTouchEnd = (e: React.TouchEvent) => {
-    if (e.touches.length < 2) {
-      pinch.current = null;
-      if (scale <= 1) setPos({ x: 0, y: 0 });
-    }
   };
 
   const hasMany = images.length > 1;
@@ -138,7 +231,7 @@ export default function Lightbox({ images, index, alt, open, onClose, onIndexCha
                 type="button"
                 onClick={() => zoomBy(-0.5)}
                 disabled={scale <= MIN}
-                className="grid h-11 w-11 place-items-center rounded-full border border-white/15 bg-white/5 text-cream transition hover:border-gold/50 disabled:opacity-40"
+                className="hidden h-11 w-11 place-items-center rounded-full border border-white/15 bg-white/5 text-cream transition hover:border-gold/50 disabled:opacity-40 sm:grid"
                 aria-label="Micșorează"
               >
                 <ZoomOut className="h-5 w-5" />
@@ -147,7 +240,7 @@ export default function Lightbox({ images, index, alt, open, onClose, onIndexCha
                 type="button"
                 onClick={() => zoomBy(0.5)}
                 disabled={scale >= MAX}
-                className="grid h-11 w-11 place-items-center rounded-full border border-white/15 bg-white/5 text-cream transition hover:border-gold/50 disabled:opacity-40"
+                className="hidden h-11 w-11 place-items-center rounded-full border border-white/15 bg-white/5 text-cream transition hover:border-gold/50 disabled:opacity-40 sm:grid"
                 aria-label="Mărește"
               >
                 <ZoomIn className="h-5 w-5" />
@@ -174,43 +267,33 @@ export default function Lightbox({ images, index, alt, open, onClose, onIndexCha
 
           {/* Zona imaginii */}
           <div
+            ref={areaRef}
             className="relative flex flex-1 select-none items-center justify-center overflow-hidden px-4"
+            style={{ touchAction: 'none' }}
             onWheel={onWheel}
             onClick={(e) => {
-              // închide doar dacă se dă click pe fundal, nu pe imagine
-              if (e.target === e.currentTarget) onClose();
+              if (e.target === e.currentTarget) onClose(); // tap pe fundal închide
             }}
           >
-            <motion.img
+            <img
               key={images[index]}
               src={images[index]}
               alt={`${alt} — imaginea ${index + 1}`}
               draggable={false}
               onDoubleClick={toggleZoom}
-              onClick={(e) => {
-                e.stopPropagation();
-                if (scale <= 1) toggleZoom();
-              }}
               onPointerDown={onPointerDown}
               onPointerMove={onPointerMove}
               onPointerUp={onPointerUp}
               onPointerLeave={onPointerUp}
-              onTouchStart={onTouchStart}
-              onTouchMove={onTouchMove}
-              onTouchEnd={onTouchEnd}
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.2 }}
-              className="max-h-[78vh] max-w-full rounded-lg object-contain shadow-premium"
+              className="max-h-[80vh] max-w-full rounded-lg object-contain shadow-premium"
               style={{
                 transform: `translate(${pos.x}px, ${pos.y}px) scale(${scale})`,
                 cursor: scale > 1 ? (dragging.current ? 'grabbing' : 'grab') : 'zoom-in',
-                touchAction: 'none',
-                transition: dragging.current ? 'none' : 'transform 0.18s ease-out',
+                willChange: 'transform',
               }}
             />
 
-            {/* Săgeți navigare */}
+            {/* Săgeți navigare (utile pe desktop; pe mobil merge și swipe) */}
             {hasMany && (
               <>
                 <button
@@ -241,7 +324,7 @@ export default function Lightbox({ images, index, alt, open, onClose, onIndexCha
 
           {/* Thumbnails jos */}
           {hasMany && (
-            <div className="flex justify-center gap-2.5 px-4 py-5">
+            <div className="flex justify-center gap-2.5 overflow-x-auto px-4 py-5">
               {images.map((img, i) => (
                 <button
                   key={img + i}
@@ -250,7 +333,7 @@ export default function Lightbox({ images, index, alt, open, onClose, onIndexCha
                     reset();
                     onIndexChange(i);
                   }}
-                  className={`relative h-14 w-16 overflow-hidden rounded-lg border transition-all sm:h-16 sm:w-20 ${
+                  className={`relative h-14 w-16 shrink-0 overflow-hidden rounded-lg border transition-all sm:h-16 sm:w-20 ${
                     i === index ? 'border-gold ring-2 ring-gold/40' : 'border-white/10 opacity-60 hover:opacity-100'
                   }`}
                   aria-label={`Imaginea ${i + 1}`}
@@ -263,7 +346,8 @@ export default function Lightbox({ images, index, alt, open, onClose, onIndexCha
 
           {/* Hint */}
           <p className="pb-3 text-center text-[11px] text-sand/70">
-            Scroll, dublu-click sau pinch pentru zoom · trage pentru a muta imaginea
+            <span className="sm:hidden">Glisează pentru a schimba poza · apropie două degete pentru zoom</span>
+            <span className="hidden sm:inline">Scroll sau dublu-click pentru zoom · trage pentru a muta imaginea</span>
           </p>
         </motion.div>
       )}
