@@ -48,7 +48,7 @@ export default function Footer() {
               href="https://anpc.ro/ce-este-sal/"
               target="_blank"
               rel="noreferrer"
-              className="inline-block rounded-md bg-white p-1.5 transition-opacity hover:opacity-90"
+              className="inline-block transition-opacity hover:opacity-90"
               aria-label="ANPC — Soluționarea Alternativă a Litigiilor"
             >
               <img src="/images/anpc-sal.svg" alt="ANPC SAL — Soluționarea Alternativă a Litigiilor" className="h-10 w-auto" />
@@ -57,7 +57,7 @@ export default function Footer() {
               href="https://ec.europa.eu/consumers/odr"
               target="_blank"
               rel="noreferrer"
-              className="inline-block rounded-md bg-white p-1.5 transition-opacity hover:opacity-90"
+              className="inline-block transition-opacity hover:opacity-90"
               aria-label="ANPC — Soluționarea Online a Litigiilor (ODR UE)"
             >
               <img src="/images/anpc-sol.svg" alt="ANPC SOL — Soluționarea Online a Litigiilor (ODR UE)" className="h-10 w-auto" />

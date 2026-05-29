@@ -34,14 +34,16 @@ export const enableAnalytics = (): void => {
   document.head.appendChild(script);
 
   window.dataLayer = window.dataLayer || [];
-  window.gtag = function gtag(...args: unknown[]) {
-    window.dataLayer!.push(args);
-  };
-  window.gtag('js', new Date());
-  window.gtag('config', GA_ID, {
-    anonymize_ip: true,
-    cookie_flags: 'SameSite=None;Secure',
-  });
+  // IMPORTANT: gtag.js procesează obiectul `arguments`, NU un array. Dacă
+  // împingem un array (push(args)), comanda `config` nu e recunoscută și GA nu
+  // trimite niciun hit (nu măsoară). De aceea folosim implementarea canonică.
+  const gtag = function () {
+    // eslint-disable-next-line prefer-rest-params
+    window.dataLayer!.push(arguments);
+  } as (...args: unknown[]) => void;
+  window.gtag = gtag;
+  gtag('js', new Date());
+  gtag('config', GA_ID, { anonymize_ip: true, send_page_view: true });
 };
 
 /** Elimină scriptul GA și șterge cookie-urile asociate. */
