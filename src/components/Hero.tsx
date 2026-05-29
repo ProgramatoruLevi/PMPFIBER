@@ -50,10 +50,10 @@ export default function Hero() {
             sizes="100vw"
             alt="Ciubăr premium PMPFiber pe malul unui lac de munte, la apus"
             width={1800}
-            height={1300}
+            height={1440}
             fetchPriority="high"
             decoding="async"
-            className="aspect-[18/13] w-full object-cover"
+            className="aspect-[5/4] w-full object-cover"
           />
           {/* Scrim sus pentru navbar */}
           <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-ink-950/75 to-transparent" />
