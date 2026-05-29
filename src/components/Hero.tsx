@@ -100,9 +100,9 @@ export default function Hero() {
           height={1014}
           fetchPriority="high"
           decoding="async"
-          className="absolute inset-0 -z-10 h-full w-full object-cover [filter:brightness(1.24)_saturate(1.07)]"
+          className="absolute inset-0 -z-10 h-full w-full object-cover [filter:brightness(1.42)_saturate(1.08)]"
         />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink-950/70 via-ink-950/30 to-transparent" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink-950/55 via-ink-950/20 to-transparent" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink-950/55 via-transparent to-ink-950/10" />
 
         <div className="container-px w-full pb-16 pt-32 sm:pt-36">
