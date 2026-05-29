@@ -53,7 +53,7 @@ export default function Hero() {
             height={1640}
             fetchPriority="high"
             decoding="async"
-            className="aspect-[45/41] w-full object-cover [filter:brightness(1.2)_saturate(1.06)]"
+            className="aspect-[45/41] w-full object-cover [filter:brightness(1.25)_saturate(1.07)]"
           />
           {/* Scrim sus pentru navbar */}
           <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-ink-950/75 to-transparent" />
@@ -100,7 +100,7 @@ export default function Hero() {
           height={1014}
           fetchPriority="high"
           decoding="async"
-          className="absolute inset-0 -z-10 h-full w-full object-cover [filter:brightness(1.18)_saturate(1.06)]"
+          className="absolute inset-0 -z-10 h-full w-full object-cover [filter:brightness(1.24)_saturate(1.07)]"
         />
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink-950/70 via-ink-950/30 to-transparent" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink-950/55 via-transparent to-ink-950/10" />
