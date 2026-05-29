@@ -53,7 +53,7 @@ export default function Hero() {
             height={1440}
             fetchPriority="high"
             decoding="async"
-            className="aspect-[5/4] w-full object-cover"
+            className="aspect-[5/4] w-full object-cover [filter:brightness(1.12)_saturate(1.04)]"
           />
           {/* Scrim sus pentru navbar */}
           <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-ink-950/75 to-transparent" />
