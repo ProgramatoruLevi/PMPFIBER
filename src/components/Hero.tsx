@@ -53,24 +53,23 @@ export default function Hero() {
           decoding="async"
           className="absolute inset-0 -z-10 h-full w-full object-cover"
         />
-        {/* Gradient sus (lizibilitate navbar) + jos (lizibilitate text) */}
-        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-ink-950/70 via-transparent to-transparent" />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink-950 via-ink-950/75 to-transparent" />
+        {/* Gradient sus (doar pentru navbar) + jos (concentrat în treimea de
+            jos, ca să rămână VIZIBIL ciubărul deasupra textului). */}
+        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-ink-950/55 via-transparent to-transparent" />
+        <div
+          className="absolute inset-0 -z-10"
+          style={{
+            backgroundImage:
+              'linear-gradient(to top, #0E0F0D 0%, rgba(14,15,13,0.82) 24%, rgba(14,15,13,0.32) 46%, transparent 62%)',
+          }}
+        />
 
-        <div className="container-px animate-fade-up pb-12 pt-28">
-          <span className="eyebrow">
-            <span className="h-px w-8 bg-gold/60" />
-            Producător român de ciubăre premium
-          </span>
-          <h1 className="mt-3 font-display text-[2.15rem] font-bold leading-[1.07] text-cream">
+        <div className="container-px animate-fade-up pb-9 pt-28 [text-shadow:0_1px_18px_rgba(0,0,0,0.55)]">
+          <h1 className="font-display text-[2.05rem] font-bold leading-[1.08] text-cream">
             Ciubăre premium pentru <span className="text-gold-gradient">relaxare autentică</span>
           </h1>
-          <p className="mt-3 max-w-md text-base leading-relaxed text-cream/85">
-            Fibră de sticlă rezistentă, finisaj din lemn premium și sobă inox inclusă —
-            confort în orice sezon.
-          </p>
 
-          <PriceAnchor className="mt-6" />
+          <PriceAnchor className="mt-5" />
 
           <div className="mt-7 space-y-3">
             <Link to="/ciubare" className="btn-gold w-full py-4 text-base">
@@ -102,11 +101,11 @@ export default function Hero() {
           decoding="async"
           className="absolute inset-0 -z-10 h-full w-full object-cover"
         />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink-950/80 via-ink-950/45 to-transparent" />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink-950/85 via-transparent to-ink-950/25" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink-950/70 via-ink-950/30 to-transparent" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink-950/55 via-transparent to-ink-950/10" />
 
         <div className="container-px w-full pb-16 pt-32 sm:pt-36">
-          <div className="max-w-2xl animate-fade-up">
+          <div className="max-w-2xl animate-fade-up [text-shadow:0_1px_20px_rgba(0,0,0,0.45)]">
             <span className="eyebrow">
               <span className="h-px w-8 bg-gold/60" />
               Producător român de ciubăre premium
