@@ -146,7 +146,6 @@ $clientContent =
 
 // ── Trimitere SMTP (încearcă mai multe configurații până prinde una) ──────
 $SMTP_PASS_LOCAL = $SMTP_PASS;
-$debug = (($_GET['diag'] ?? '') === 'pmp7421diag');
 
 // host, port, securitate
 $CONFIGS = [
@@ -203,11 +202,7 @@ foreach ($CONFIGS as $cfg) {
 
 if ($workingCfg === null) {
   http_response_code(500);
-  $out = ['ok' => false, 'error' => 'Trimitere eșuată'];
-  if ($debug) {
-    $out['attempts'] = $attempts;
-  }
-  echo json_encode($out);
+  echo json_encode(['ok' => false, 'error' => 'Trimitere eșuată']);
   exit;
 }
 
@@ -229,8 +224,4 @@ if ($email !== '') {
   }
 }
 
-$out = ['ok' => true];
-if ($debug) {
-  $out['via'] = $workingCfg[0] . ':' . $workingCfg[1];
-}
-echo json_encode($out);
+echo json_encode(['ok' => true]);
