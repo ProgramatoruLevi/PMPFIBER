@@ -7,10 +7,10 @@
 import { getCookiePreferences } from './cookies';
 
 /**
- * ID Google Analytics (Measurement ID GA4).
- * Placeholder pentru dezvoltare. Înlocuiește cu ID-ul real al PMPFIBER.
+ * ID Google Analytics (Measurement ID GA4) — PMPFIBER.
+ * Stream „PMPFIBER", https://www.pmpfiber.ro. Se încarcă doar după consimțământ.
  */
-export const GA_ID = 'G-TESTPMPFBR0';
+export const GA_ID = 'G-F3YNT9EQFW';
 
 let gaLoaded = false;
 
